@@ -134,10 +134,13 @@ const App = () => {
       // Game is over
       setGameState('results');
     } else {
-      // Move to next line and switch players
+      // Move to next line and switch players immediately without delay
       setCurrentLineIndex(prevIndex => prevIndex + 1);
       setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
     }
+    
+    // Reset realtime score for the new player
+    // setRealtimeScore(0);
   };
 
   // Start a new game
@@ -210,6 +213,7 @@ const App = () => {
             </div>
             
             <PlayerRecorder
+              key={`player-${currentPlayer}-line-${currentLineIndex}`}
               playerName={`Player ${currentPlayer}`}
               lineText={songData.lyrics[currentLineIndex].text}
               originalVocalsUrl={songData.vocalsUrl}
