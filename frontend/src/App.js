@@ -1,4 +1,4 @@
-// App.js with support for instrumental intro
+// App.js with auto-transition between players
 import React, { useState, useEffect } from 'react';
 import PlayerRecorder from './PlayerRecorder';
 import './App.css';
@@ -12,6 +12,9 @@ const App = () => {
   const [songData, setSongData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentAudio, setCurrentAudio] = useState(null);
+  // Store microphone stream globally to reuse between players
+  const [microphoneStream, setMicrophoneStream] = useState(null);
+  const [realtimeScore, setRealtimeScore] = useState(0);
 
   // Load song data on component mount
   useEffect(() => {
@@ -57,8 +60,27 @@ const App = () => {
         currentAudio.pause();
         currentAudio.src = '';
       }
+      // Clean up the microphone stream when the component unmounts
+      if (microphoneStream) {
+        microphoneStream.getTracks().forEach(track => track.stop());
+      }
     };
   }, []);
+
+  // Request microphone access when the game starts
+  const initializeMicrophone = async () => {
+    if (!microphoneStream) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        setMicrophoneStream(stream);
+        return stream;
+      } catch (error) {
+        console.error('Error accessing microphone:', error);
+        return null;
+      }
+    }
+    return microphoneStream;
+  };
 
   // Play the current line's audio section
   const playCurrentLineAudio = () => {
@@ -85,6 +107,11 @@ const App = () => {
     setTimeout(() => {
       audio.pause();
     }, currentLine.duration * 1000);
+  };
+
+  // Handle realtime score updates
+  const handleRealtimeScoreUpdate = (score) => {
+    setRealtimeScore(score);
   };
 
   // Handle score calculation for the current player
@@ -114,7 +141,9 @@ const App = () => {
   };
 
   // Start a new game
-  const startGame = () => {
+  const startGame = async () => {
+    // Initialize microphone before starting the game
+    await initializeMicrophone();
     setGameState('playing');
     setCurrentPlayer(1);
     setCurrentLineIndex(0);
@@ -175,14 +204,22 @@ const App = () => {
               </button>
             </div>
 
+            {/* Real-time score display */}
+            <div className="realtime-score">
+              Current Performance: {realtimeScore ? Math.round(realtimeScore) : '0'}
+            </div>
+            
             <PlayerRecorder
               playerName={`Player ${currentPlayer}`}
               lineText={songData.lyrics[currentLineIndex].text}
               originalVocalsUrl={songData.vocalsUrl}
               lineDuration={songData.lyrics[currentLineIndex].duration || 
-                            (songData.lyrics[currentLineIndex].endTime - 
-                             songData.lyrics[currentLineIndex].startTime)}
+                          (songData.lyrics[currentLineIndex].endTime - 
+                           songData.lyrics[currentLineIndex].startTime)}
               onScoreCalculated={handleScoreCalculated}
+              onRealtimeScoreUpdate={handleRealtimeScoreUpdate}
+              microphoneStream={microphoneStream}
+              autoStart={currentLineIndex > 0} // Auto-start for all lines except the first
             />
           </div>
         )}
