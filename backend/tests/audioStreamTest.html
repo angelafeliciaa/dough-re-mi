@@ -77,7 +77,7 @@
             const rms = Math.sqrt(sumOfSquares / dataArray.length);
             
             // Convert to percentage (amplify it a bit for better visualization)
-            const volume = Math.min(100, rms * 200 * 100);
+            const volume = Math.min(100, rms * 20 * 100);
             
             // Update volume meter
             document.getElementById('volumeFill').style.width = volume + '%';
