@@ -1,0 +1,74 @@
+{
+    "title": "Blinding Lights",
+    "artist": "The Weeknd",
+    "vocalsUrl": "/songs/blinding_lights.mp3",
+    "instrumentalIntro": 27,
+    "lyrics": [
+      {
+        "text": "I've been tryna call",
+        "startTime": 38.5,
+        "endTime": 40.5,
+        "duration": 2
+      },
+      {
+        "text": "I've been on my own for long enough",
+        "startTime": 12.5,
+        "endTime": 15.5,
+        "duration": 3
+      },
+      {
+        "text": "Maybe you can show me how to love, maybe",
+        "startTime": 15.5,
+        "endTime": 19.5,
+        "duration": 4
+      },
+      {
+        "text": "I'm going through withdrawals",
+        "startTime": 19.5,
+        "endTime": 22.5,
+        "duration": 3
+      },
+      {
+        "text": "You don't even have to do too much",
+        "startTime": 22.5,
+        "endTime": 25.5,
+        "duration": 3
+      },
+      {
+        "text": "You can turn me on with just a touch, baby",
+        "startTime": 25.5,
+        "endTime": 29.5,
+        "duration": 4
+      },
+      {
+        "text": "I look around and Sin City's cold and empty",
+        "startTime": 32.5,
+        "endTime": 36.5,
+        "duration": 4
+      },
+      {
+        "text": "No one's around to judge me",
+        "startTime": 36.5,
+        "endTime": 39.5,
+        "duration": 3
+      },
+      {
+        "text": "I can't see clearly when you're gone",
+        "startTime": 39.5,
+        "endTime": 43.5,
+        "duration": 4
+      },
+      {
+        "text": "I said, ooh, I'm blinded by the lights",
+        "startTime": 43.5,
+        "endTime": 47.5,
+        "duration": 4
+      },
+      {
+        "text": "No, I can't sleep until I feel your touch",
+        "startTime": 47.5,
+        "endTime": 51.5,
+        "duration": 4
+      }
+    ]
+  }

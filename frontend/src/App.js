@@ -1,25 +1,224 @@
-import logo from './logo.svg';
+// App.js with support for instrumental intro
+import React, { useState, useEffect } from 'react';
+import PlayerRecorder from './PlayerRecorder';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [gameState, setGameState] = useState('setup'); // setup, playing, results
+  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [player1Score, setPlayer1Score] = useState(0);
+  const [player2Score, setPlayer2Score] = useState(0);
+  const [songData, setSongData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentAudio, setCurrentAudio] = useState(null);
+
+  // Load song data on component mount
+  useEffect(() => {
+    const loadSongData = async () => {
+      try {
+        // In a real app, this would be a fetch call to load song data
+        const response = await fetch('/songs/song-data.json');
+        const data = await response.json();
+        setSongData(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error loading song data:', error);
+        // Fallback to sample data for testing
+        setSongData({
+          title: "Test Song",
+          artist: "Test Artist",
+          vocalsUrl: "/songs/test-vocals.mp3",
+          instrumentalIntro: 0, // Default to 0 if not specified
+          lyrics: [
+            {
+              text: "This is the first line of the song",
+              startTime: 0,
+              endTime: 5,
+              duration: 5
+            },
+            {
+              text: "This is the second line of the song",
+              startTime: 6,
+              endTime: 11,
+              duration: 5
+            }
+          ]
+        });
+        setIsLoading(false);
+      }
+    };
+
+    loadSongData();
+    
+    // Clean up any audio on unmount
+    return () => {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+      }
+    };
+  }, []);
+
+  // Play the current line's audio section
+  const playCurrentLineAudio = () => {
+    // Stop any currently playing audio
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.src = '';
+    }
+    
+    // Create new audio element
+    const audio = new Audio(songData.vocalsUrl);
+    setCurrentAudio(audio);
+    
+    // Get current line timing
+    const currentLine = songData.lyrics[currentLineIndex];
+    
+    // Set time to the start of this line
+    audio.currentTime = currentLine.startTime;
+    
+    // Play the audio
+    audio.play();
+    
+    // Stop when the line is finished
+    setTimeout(() => {
+      audio.pause();
+    }, currentLine.duration * 1000);
+  };
+
+  // Handle score calculation for the current player
+  const handleScoreCalculated = (score) => {
+    // Stop any currently playing audio
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.src = '';
+    }
+    
+    // Update the score for the current player
+    if (currentPlayer === 1) {
+      setPlayer1Score(prevScore => prevScore + score);
+    } else {
+      setPlayer2Score(prevScore => prevScore + score);
+    }
+
+    // Move to next line or end game
+    if (currentLineIndex >= songData.lyrics.length - 1) {
+      // Game is over
+      setGameState('results');
+    } else {
+      // Move to next line and switch players
+      setCurrentLineIndex(prevIndex => prevIndex + 1);
+      setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+    }
+  };
+
+  // Start a new game
+  const startGame = () => {
+    setGameState('playing');
+    setCurrentPlayer(1);
+    setCurrentLineIndex(0);
+    setPlayer1Score(0);
+    setPlayer2Score(0);
+  };
+
+  // Start another game from results screen
+  const playAgain = () => {
+    startGame();
+  };
+
+  if (isLoading) {
+    return <div className="loading">Loading song data...</div>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="app">
+      <header className="app-header">
+        <h1>Karaoke Battle</h1>
       </header>
+
+      <main className="app-main">
+        {gameState === 'setup' && (
+          <div className="setup-screen">
+            <h2>Welcome to Karaoke Battle!</h2>
+            <p>Take turns singing lines from "{songData.title}" by {songData.artist}</p>
+            <p>Each player will get a score based on how well they match the original.</p>
+            {songData.instrumentalIntro > 0 && (
+              <p>This song has a {songData.instrumentalIntro} second instrumental intro before vocals start.</p>
+            )}
+            <button className="start-button" onClick={startGame}>
+              Start Game
+            </button>
+          </div>
+        )}
+
+        {gameState === 'playing' && (
+          <div className="game-screen">
+            <div className="game-info">
+              <div className="player-scores">
+                <div className={`player-score ${currentPlayer === 1 ? 'active' : ''}`}>
+                  Player 1: {player1Score}
+                </div>
+                <div className={`player-score ${currentPlayer === 2 ? 'active' : ''}`}>
+                  Player 2: {player2Score}
+                </div>
+              </div>
+              
+              <div className="line-counter">
+                Line {currentLineIndex + 1} of {songData.lyrics.length}
+              </div>
+            </div>
+
+            <div className="line-controls">
+              <button className="listen-button" onClick={playCurrentLineAudio}>
+                Listen to This Line
+              </button>
+            </div>
+
+            <PlayerRecorder
+              playerName={`Player ${currentPlayer}`}
+              lineText={songData.lyrics[currentLineIndex].text}
+              originalVocalsUrl={songData.vocalsUrl}
+              lineDuration={songData.lyrics[currentLineIndex].duration || 
+                            (songData.lyrics[currentLineIndex].endTime - 
+                             songData.lyrics[currentLineIndex].startTime)}
+              onScoreCalculated={handleScoreCalculated}
+            />
+          </div>
+        )}
+
+        {gameState === 'results' && (
+          <div className="results-screen">
+            <h2>Game Over!</h2>
+            
+            <div className="final-scores">
+              <div className="final-score">
+                <h3>Player 1</h3>
+                <div className="score">{player1Score}</div>
+              </div>
+              
+              <div className="final-score">
+                <h3>Player 2</h3>
+                <div className="score">{player2Score}</div>
+              </div>
+            </div>
+            
+            <div className="winner-announcement">
+              {player1Score > player2Score
+                ? "Player 1 wins!"
+                : player2Score > player1Score
+                  ? "Player 2 wins!"
+                  : "It's a tie!"}
+            </div>
+            
+            <button className="play-again-button" onClick={playAgain}>
+              Play Again
+            </button>
+          </div>
+        )}
+      </main>
     </div>
   );
-}
+};
 
 export default App;
