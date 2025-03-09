@@ -9,12 +9,13 @@ import pretzel from "../../assets/pastryicons/pretzel.png";
 import cake from "../../assets/pastryicons/cake.png";
 import cinnamonRoll from "../../assets/pastryicons/cinnamon.png";
 import cdIcon from "../../assets/pastryicons/cd.png";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import trophyIcon from "../../assets/pastryicons/trophy.png";
+import { useNavigate } from "react-router-dom";
 
 function Start() {
   const [started, setStarted] = useState(false);
   const [name, setName] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const items = [
     { src: bread, alt: "Bread" },
@@ -30,9 +31,7 @@ function Start() {
   const handleGameSubmit = (e) => {
     e.preventDefault();
     if (name) {
-      // Store the name in localStorage if necessary
       localStorage.setItem("playerName", name);
-      // Navigate to /game
       navigate("/game");
     } else {
       alert("Please enter your name before starting!");
@@ -40,11 +39,15 @@ function Start() {
   };
 
   const handleStartClick = () => {
-    setStarted(true); // Switch to name entry form
+    setStarted(true);
+  };
+
+  const handleLeaderboardClick = () => {
+    navigate("/leaderboard"); // Navigates to leaderboard page
   };
 
   const handleNameChange = (e) => {
-    setName(e.target.value); // Update name as user types
+    setName(e.target.value);
   };
 
   return (
@@ -63,15 +66,17 @@ function Start() {
       <div className="title-container">
         {!started ? (
           <>
-            {/* Displaying Title and Start Button */}
             <h1 className="game-title">Dough-Re-Mi</h1>
             <div className="start-button" onClick={handleStartClick}>
               <span>Start</span>
               <img src={cdIcon || "/placeholder.svg"} alt="CD Icon" className="cd-icon" />
             </div>
+            <div className="leaderboard-button" onClick={handleLeaderboardClick}>
+              <span>Leaderboard</span>
+              <img src={trophyIcon || "/placeholder.svg"} alt="Trophy Icon" className="cd-icon" />
+            </div>
           </>
         ) : (
-          // Name Entry Form displayed after Start button click
           <div className="name-entry-container">
             <h2>Please enter your name:</h2>
             <form onSubmit={handleGameSubmit} className="name-form">
