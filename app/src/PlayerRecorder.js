@@ -95,9 +95,8 @@ const PlayerRecorder = ({
       onScoreCalculated(calculatedScore);
     } catch (error) {
       console.error('Error calculating score:', error);
-      // Fallback to random score
-      const fallbackScore = Math.floor(Math.random() * 36) + 60;
-      onScoreCalculated(fallbackScore);
+      // const fallbackScore = Math.floor(Math.random() * 36) + 60;
+      // onScoreCalculated(fallbackScore);
     }
   };
   
