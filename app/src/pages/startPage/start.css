@@ -1,102 +1,108 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "PixelFont", monospace;
+}
 
-  
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: "PixelFont", monospace;
-  }
-  
-  .game-container {
-    background-color: #ffd6e7;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 40px 0;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-  
-  .bakery-items {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    padding: 0 20%;
-  }
-  
-  .bakery-item {
-    image-rendering: pixelated;
-    width: 48px;
-    height: 48px;
-  }
-  
-  .title-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  .game-title {
-    font-size: 48px;
-    font-family: "PixelFont", monospace;
-    letter-spacing: 2px;
-    margin: 0;
-    image-rendering: pixelated;
-    text-align: center;
-  }
-  
-  .start-button {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 32px;
-    cursor: pointer;
-  }
-  
-  .cd-icon {
-    width: 24px;
-    height: 24px;
-    image-rendering: pixelated;
-  }
-  
-  /* Position adjustments for specific items */
-  .bread {
-    transform: translateX(-40px) translateY(20px);
-  }
-  
-  .tart {
-    transform: translateY(-10px);
-  }
-  
-  .cookies {
-    transform: translateX(20px) translateY(-5px);
-  }
-  
-  .pancakes {
-    transform: translateX(10px) translateY(15px);
-  }
-  
-  .donut {
-    transform: translateX(-40px) translateY(-20px);
-  }
-  
-  .pretzel {
-    transform: translateX(-10px) translateY(10px);
-  }
-  
-  .cake {
-    transform: translateX(20px) translateY(-15px);
-  }
-  
-  .cinnamon-roll {
-    transform: translateX(40px) translateY(5px);
-  }
-  
+.game-container {
+  background-color: #ffd6e7;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
 
- /* Name Entry Form */
+.bakery-items {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 20%;
+}
+
+.bakery-item {
+  image-rendering: pixelated;
+  width: 48px;
+  height: 48px;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.game-title {
+  font-size: 48px;
+  font-family: "PixelFont", monospace;
+  letter-spacing: 2px;
+  margin: 0;
+  image-rendering: pixelated;
+  text-align: center;
+}
+
+.start-button, .leaderboard-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 32px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.start-button:hover, .leaderboard-button:hover {
+  transform: scale(1.05); /* Slight scale effect when hovered */
+}
+
+.start-button:active, .leaderboard-button:active {
+  transform: scale(0.98); /* Slight shrink effect when clicked */
+}
+
+.cd-icon, .leaderboard-button img {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+}
+
+/* Position adjustments for specific items */
+.bread {
+  transform: translateX(-40px) translateY(20px);
+}
+
+.tart {
+  transform: translateY(-10px);
+}
+
+.cookies {
+  transform: translateX(20px) translateY(-5px);
+}
+
+.pancakes {
+  transform: translateX(10px) translateY(15px);
+}
+
+.donut {
+  transform: translateX(-40px) translateY(-20px);
+}
+
+.pretzel {
+  transform: translateX(-10px) translateY(10px);
+}
+
+.cake {
+  transform: translateX(20px) translateY(-15px);
+}
+
+.cinnamon-roll {
+  transform: translateX(40px) translateY(5px);
+}
+
+/* Name Entry Form */
 .name-entry-container {
   display: flex;
   flex-direction: column;
@@ -154,12 +160,12 @@
 }
 
 /* Button hover effect */
-.start-button:hover {
+.start-button:hover, .leaderboard-button:hover {
   transform: scale(1.05); /* Slight scale effect when hovered */
   transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
 /* Button active effect */
-.start-button:active {
+.start-button:active, .leaderboard-button:active {
   transform: scale(0.98); /* Slight shrink effect when clicked */
 }

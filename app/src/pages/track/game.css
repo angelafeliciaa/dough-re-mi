@@ -3,29 +3,55 @@
     justify-content: center;
     align-items: center;
     position: relative; /* Needed for absolute positioning of the car */
-}
-
-.center-image {
+  }
+  
+  .center-image {
     width: 110vh; /* Keep the track image large */
     height: 110vh;
     object-fit: cover;
-}
-
-.car-container {
+  }
+  
+  .car-container {
     position: absolute;
     top: 55%; /* Keep the car centered vertically */
-    left: 27%; /* Move the car slightly to the left */
     transform: translate(-50%, -50%) scaleX(-1); /* Flip the car horizontally */
-}
-
-.car-image {
+  }
+  
+  .car-container1 {
+    position: absolute;
+    top: 50%; /* Keep the car centered vertically */
+  }
+  
+  .car-image {
     width: 250px; /* Large car */
     height: auto;
-}
-
-.car-container1 {
+  }
+  
+  .character-container {
     position: absolute;
-    top: 49%; /* Keep the car centered vertically */
-    left: 19%; /* Move the car slightly to the left */
-    /*transform: translate(-50%, -50%) scaleX(-1); /* Flip the car horizontally */
-}
+    top: 10%; /* Position Snail and Fish slightly from top */
+    right: 10%; /* Position at the right corner */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align the characters to the right */
+  }
+  
+  .character-image {
+    width: 150px; /* Much smaller size for Snail and Fish */
+    height: auto;
+  }
+  
+  .text-bubble {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    transform: translateX(10px);
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 12px; /* Adjust font size for smaller text */
+    max-width: 100px; /* Limit width of the text bubble */
+  }
+  

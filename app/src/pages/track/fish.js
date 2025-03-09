@@ -1,11 +1,13 @@
-import React from 'react'
+import React from 'react';
+import fishImage from '../../assets/characters/fish.png';
 
-const fish = () => {
+const Fish = () => {
   return (
-    <div>
-      
+    <div className="character-container">
+      <img src={fishImage} alt="Fish" className="character-image" />
+      <div className="text-bubble">That's bad!</div>
     </div>
-  )
-}
+  );
+};
 
-export default fish
+export default Fish;
