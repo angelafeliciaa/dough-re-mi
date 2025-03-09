@@ -57,7 +57,7 @@ const Start = () => {
   };
 
   return (
-    <div className="game-container">
+    <div className="start-container">
       <div className="bakery-items top-items">
         {items.slice(0, 4).map((item, index) => (
           <img
