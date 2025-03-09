@@ -21,7 +21,7 @@
   
   .car-container1 {
     position: absolute;
-    top: 50%; /* Keep the car centered vertically */
+    top: 48%; 
   }
   
   .car-image {
