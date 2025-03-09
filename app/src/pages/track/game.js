@@ -184,16 +184,6 @@ import React, { useState, useEffect } from 'react';
                    {player2Name} : {player2Score}
                  </div>
                </div>
-               
-               <div className="line-counter">
-                 Line {currentLineIndex + 1} of {songData.lyrics.length}
-               </div>
-             </div>
- 
-             <div className="line-controls">
-               <button className="listen-button" onClick={playCurrentLineAudio}>
-                 Listen to This Line
-               </button>
              </div>
  
              {/* Real-time score display */}
