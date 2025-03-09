@@ -5,11 +5,23 @@
     justify-content: space-between;
     align-items: center;
     position: relative; /* Needed for absolute positioning of the car */
+    padding-top:10px;
+  }
+
+  .game-container-outer {
+    background-color: #ffd6e7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* Needed for absolute positioning of the car */
+    padding-bottom: 40px;
+    padding-top:10px;
   }
   
   .center-image {
     width: 110vh; /* Keep the track image large */
-    height: 110vh;
+    height: 55vh;
     object-fit: cover;
   }
   

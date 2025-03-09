@@ -176,7 +176,7 @@ const Game = () => {
   }
 
   return (
-    <div className="game-container">
+    <div className="game-container-outer">
           <div className="">
           <Graphic 
              realtimeScore={realtimeScore} 
