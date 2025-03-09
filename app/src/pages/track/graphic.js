@@ -10,7 +10,7 @@ import "./game.css";
 const Graphic = ({ realtimeScore, player1Score, player2Score }) => {
   // Dynamic character and message based on score
   const [character, setCharacter] = useState("snail");
-  const [text, setText] = useState("Good job!");
+  const [text, setText] = useState(" ");
 
   // Initial positions remain fixed
   const initialCar1Position = 20;
@@ -23,9 +23,10 @@ const Graphic = ({ realtimeScore, player1Score, player2Score }) => {
 
   // Update character and message based on `realtimeScore`
   useEffect(() => {
-    let randomText = "";
-
-    if (player1Score > 30 || player2Score > 30) {
+    let randomText = '';
+    
+    if
+     (player1Score || player2Score > 30) {
       setCharacter("snail");
       randomText = ["Amazing!", "Ok Sabrina!!", "Singer of the year!"][
         Math.floor(Math.random() * 3)
