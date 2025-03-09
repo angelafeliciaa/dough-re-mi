@@ -130,9 +130,9 @@ const Game = () => {
     
     // Update the score for the current player
     if (currentPlayer === 1) {
-      setPlayer1Score(prevScore => Math.round((prevScore + score)/2));
+      setPlayer1Score(prevScore => prevScore + score);
     } else {
-      setPlayer2Score(prevScore => Math.round((prevScore + score)/2)-5);
+      setPlayer2Score(prevScore => prevScore + score - 16);
     }
 
     // Move to next line or end game
@@ -177,12 +177,16 @@ const Game = () => {
 
   return (
     <div className="game-container-outer">
-          <div className="">
-          <Graphic 
-             realtimeScore={realtimeScore} 
-             player1Score={player1Score} 
-             player2Score={player2Score} 
-           />
+      <div className="">
+        <Graphic 
+          realtimeScore={realtimeScore} 
+          player1Score={player1Score} 
+          player2Score={player2Score} 
+        />
+        
+        {/* Only show game info and player recorder when not in results state */}
+        {gameState !== 'results' && (
+          <>
             <div className="game-info">
               <div className="player-scores">
                 <div className={`player-score ${currentPlayer === 1 ? 'active' : ''}`}>
@@ -196,7 +200,7 @@ const Game = () => {
             
             <PlayerRecorder
               key={`player-${currentPlayer}-line-${currentLineIndex}`}
-              playerName={getCurrentPlayerName()} // Use the current player's actual name
+              playerName={getCurrentPlayerName()} 
               lineText={songData.lyrics[currentLineIndex].text}
               originalVocalsUrl={songData.vocalsUrl}
               lineDuration={songData.lyrics[currentLineIndex].duration || 
@@ -205,40 +209,42 @@ const Game = () => {
               onScoreCalculated={handleScoreCalculated}
               onRealtimeScoreUpdate={handleRealtimeScoreUpdate}
               microphoneStream={microphoneStream}
-              autoStart={currentLineIndex > 0} // Auto-start for all lines except the first
+              autoStart={currentLineIndex > 0}
             />
-          </div>
-
-          <Karaoke />
-
-        {gameState === 'results' && (
-          <div className="results-screen">
-            <h2>Game Over!</h2>
-            
-            <div className="final-scores">
-              <div className="final-score">
-                <h3>{player1Name}</h3>
-                <div className="score">{player1Score}</div>
-              </div>
-              
-              <div className="final-score">
-                <h3>{player2Name}</h3>
-                <div className="score">{player2Score}</div>
-              </div>
-            </div>
-            
-            <div className="winner-announcement">
-              {player1Score > player2Score
-                ? `${player1Name} wins!`
-                : player2Score > player1Score
-                  ? `${player2Name} wins!`
-                  : "It's a tie!"}
-            </div>
-            
-          </div>
+          </>
         )}
+      </div>
+
+      {/* Only show Karaoke when not in results state */}
+      {gameState !== 'results' && <Karaoke />}
+
+      {gameState === 'results' && (
+        <div className="results-screen">
+          <h2>Game Over!</h2>
+          
+          <div className="final-scores">
+            <div className="final-score">
+              <h3>{player1Name}</h3>
+              <div className="score">{player1Score}</div>
+            </div>
+            
+            <div className="final-score">
+              <h3>{player2Name}</h3>
+              <div className="score">{player2Score}</div>
+            </div>
+          </div>
+          
+          <div className="winner-announcement">
+            {player1Score > player2Score
+              ? `${player1Name} wins!`
+              : player2Score > player1Score
+                ? `${player2Name} wins!`
+                : "It's a tie!"}
+          </div>
+          
+        </div>
+      )}
     </div>
-  
   );
 };
 
