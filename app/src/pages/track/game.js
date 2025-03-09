@@ -158,7 +158,7 @@ const Game = () => {
     if (currentPlayer === 1) {
       setPlayer1Score(prevScore => prevScore + Math.round(score/5));
     } else {
-      setPlayer2Score(prevScore => prevScore + Math.round(score/5) - 10);
+      setPlayer2Score(prevScore => prevScore + Math.round(score/5) - 5);
     }
 
     // Move to next line or end game
@@ -290,9 +290,9 @@ const Game = () => {
                 ? `${player2Name} wins!`
                 : "It's a tie!"}
           </div>
-          <button onClick={handleSaveScore} className='start-button'>Save To Leaderboard</button>
-          <button onClick={handleViewLeaderboard} className='start-button'>View Leaderboard</button>
-          <button onClick={handlePlayAgain} className='start-button'>Play Again</button>
+          <button onClick={handleSaveScore} className='save-to-leaderboard-button'>Save To Leaderboard</button>
+          <button onClick={handleViewLeaderboard} className='view-leaderboard-button'>View Leaderboard</button>
+          <button onClick={handlePlayAgain} className='play-again-button'>Play Again</button>
         </div>
       )}
     </div>
