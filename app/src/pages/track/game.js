@@ -169,6 +169,30 @@ import React, { useState, useEffect } from 'react';
    if (isLoading) {
      return <div className="loading">Loading song data...</div>;
    }
+
+   const saveScore = (name, score) => {
+    let leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+  
+    // Check if leaderboard exists in localStorage
+    if (!leaderboard) {
+      leaderboard = []; // Initialize it if it doesn't exist
+    }
+  
+    // Add the new score to the leaderboard
+    leaderboard.push({ name, score });
+  
+    // Sort leaderboard in descending order by score
+    //leaderboard.sort((a, b) => b.score - a.score);
+  
+    // Save the updated leaderboard back to localStorage
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+  };
+
+  const handleSaveScore = () => {
+    saveScore(player1Name, player1Score);
+    saveScore(player2Name, player2Score);
+  }
+  
  
    return (
      <div className="game-container">
@@ -227,6 +251,7 @@ import React, { useState, useEffect } from 'react';
                </div>
              </div>
              
+             <div>
              <div className="winner-announcement">
                {player1Score > player2Score
                  ? "Player 1 wins!"
@@ -234,7 +259,8 @@ import React, { useState, useEffect } from 'react';
                    ? "Player 2 wins!"
                    : "It's a tie!"}
              </div>
-             
+             <button className="start-button" onClick={handleSaveScore} >Save To Leaderboard</button>
+             </div>
            </div>
          )}
      </div>
