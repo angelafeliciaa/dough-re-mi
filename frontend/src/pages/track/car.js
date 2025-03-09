@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
+import raceCarImage from '../../assets/characters/racecar.png'; // Update the path to your image file
 
-const car = () => {
+const Car = () => {
   return (
-    <div>
-      
+    <div className="car-container">
+      <img src={raceCarImage} alt="Race Car" className="car-image" />
     </div>
-  )
-}
+  );
+};
 
-export default car
+export default Car;

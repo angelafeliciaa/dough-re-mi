@@ -1,13 +1,32 @@
 .game-container {
     display: flex;
     justify-content: center;
-    align-items: center; /* Align items to the top with space at the bottom */
-    height: 100vh; /* Full viewport height */
-  }
-  
-  .center-image {
-    width: 100vh;  /* Reduce the width to make it smaller */
-    height: 100vh; /* Keep the image square */
-    object-fit: cover; /* Prevent image distortion */
-  }
-  
+    align-items: center;
+    height: 100vh;
+    position: relative; /* Needed for absolute positioning of the car */
+}
+
+.center-image {
+    width: 110vh; /* Keep the track image large */
+    height: 110vh;
+    object-fit: cover;
+}
+
+.car-container {
+    position: absolute;
+    top: 55%; /* Keep the car centered vertically */
+    left: 27%; /* Move the car slightly to the left */
+    transform: translate(-50%, -50%) scaleX(-1); /* Flip the car horizontally */
+}
+
+.car-image {
+    width: 250px; /* Large car */
+    height: auto;
+}
+
+.car-container1 {
+    position: absolute;
+    top: 49%; /* Keep the car centered vertically */
+    left: 19%; /* Move the car slightly to the left */
+    /*transform: translate(-50%, -50%) scaleX(-1); /* Flip the car horizontally */
+}
