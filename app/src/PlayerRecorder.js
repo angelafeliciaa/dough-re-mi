@@ -1,4 +1,3 @@
-// PlayerRecorder.js
 import React, { useState, useEffect, useRef } from 'react';
 import './PlayerRecorder.css'; // Create this file for styling
 import RealTimePitchFeedback from './RealTimePitchFeedback';
@@ -14,7 +13,8 @@ const PlayerRecorder = ({
   microphoneStream,
   autoStart = false
 }) => {
-  const [status, setStatus] = useState('ready'); // ready, recording, processing
+  // Add a new "preparing" state to handle the auto-start delay
+  const [status, setStatus] = useState(autoStart ? 'preparing' : 'ready'); // ready, preparing, recording, processing
   const [recordingTime, setRecordingTime] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
   
@@ -51,22 +51,12 @@ const PlayerRecorder = ({
       setRecordingTime(0);
       
       // Set up timer to track recording duration
-      // let seconds = 0;
-      // recordingTimerRef.current = setInterval(() => {
-      //   seconds++;
-      //   setRecordingTime(seconds);
-        
-      //   // Auto-stop after duration + 0.5 seconds (give a little buffer)
-      //   if (seconds >= lineDuration + 0.5) {
-      //     stopRecording();
-      //   }
-      // }, 1000);
-      let elapsedTime = 0;
+      let elapsedTime = 1;
       recordingTimerRef.current = setInterval(() => {
         elapsedTime += 0.1; // Increment by 100ms for more precision
         setRecordingTime(Math.floor(elapsedTime)); // Only update display with whole seconds
         
-        // Auto-stop exactly at duration (remove the 0.5 buffer)
+        // Auto-stop exactly at duration
         if (elapsedTime >= lineDuration) {
           stopRecording();
         }
@@ -86,36 +76,9 @@ const PlayerRecorder = ({
       
       // Don't stop the audio tracks - just pause the recorder
       // We'll keep the microphone stream active for the next player
-      // This fixes the issue with Player 2 getting stuck
     }
   };
   
-  // Process the recording and calculate score
-  // const processRecording = async () => {
-  //   setStatus('processing');
-    
-  //   // Create a blob from recorded chunks
-  //   const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-    
-  //   try {
-  //     // Use scoreWithAudioUrl function (moved inside a useEffect or event handler)
-  //     const calculatedScore = await scoreWithAudioUrl(audioBlob, originalVocalsUrl);
-
-  //     const timeoutPromise = new Promise(resolve => {
-  //       setTimeout(() => resolve({ finalScore: 75 }), 250);
-  //     });
-      
-  //     // Race between actual calculation and timeout
-  //     const result = await Promise.race([calculatedScore, timeoutPromise]);
-      
-  //     // Proceed to the next player with the calculated score
-  //     onScoreCalculated(result.finalScore || result);
-  //   } catch (error) {
-  //     console.error('Error calculating score:', error);
-  //     // const fallbackScore = Math.floor(Math.random() * 36) + 60;
-  //     // onScoreCalculated(fallbackScore);
-  //   }
-  // };
   const processRecording = async () => {
     // Create a blob from recorded chunks
     const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
@@ -147,10 +110,11 @@ const PlayerRecorder = ({
   // Auto-start recording if autoStart is true
   useEffect(() => {
     if (autoStart && microphoneStream) {
-      // Automatically start recording after a short delay
+      // Set status to 'preparing' immediately (already done in initial state)
+      // then start recording after a short delay
       const timer = setTimeout(() => {
         startRecording();
-      }, 1000);
+      }, 100);
       
       return () => clearTimeout(timer);
     }
@@ -179,30 +143,21 @@ const PlayerRecorder = ({
           </button>
         )}
         
+        {status === 'preparing' && (
+          <div className="preparing-info">
+            <p>Get ready to sing!</p>
+            <div className="loading-spinner"></div>
+          </div>
+        )}
+        
         {status === 'recording' && (
           <div className="recording-info">
             <div className="recording-indicator">Recording... {recordingTime}s</div>
             <button className="stop-button" onClick={stopRecording}>
               Stop Recording
             </button>
-            
-            {/* Render RealTimePitchFeedback conditionally */}
-            {/* {status === 'recording' && (
-              <RealTimePitchFeedback 
-                isActive={true}
-                micStream={microphoneStream}
-                onScoreUpdate={onRealtimeScoreUpdate}
-              />
-            )} */}
           </div>
         )}
-        
-        {/* {status === 'processing' && (
-          <div className="processing-info">
-            <p>Calculating your score...</p>
-            <div className="loading-spinner"></div>
-          </div>
-        )} */}
         
         {errorMessage && (
           <div className="error-message">
