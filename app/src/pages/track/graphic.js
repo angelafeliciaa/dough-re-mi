@@ -6,75 +6,58 @@ import Snail from './snail.js';
 import Fish from './fish.js';
 import './game.css';
 
-const Graphic = () => {
+const Graphic = ({ realtimeScore, player1Score, player2Score }) => {
+  // Dynamic character and message based on score
   const [character, setCharacter] = useState("snail");
   const [text, setText] = useState("Good job!");
 
-  // Starting positions of the cars
-  const initialCar1Position = 380;
-  const initialCar2Position = 270;
+  // Initial positions of the cars
+  const initialCar1Position = 110;
+  const initialCar2Position = 10;
+  const maxPosition = 1000; // Max track length
 
-  // Maximum position the cars can reach
-  const maxPosition = 1000; // Adjust this value based on the width of your screen or game area
-
-  // Track the position of the cars
+  // Car movement based on score
   const [car1Position, setCar1Position] = useState(initialCar1Position);
   const [car2Position, setCar2Position] = useState(initialCar2Position);
 
-  // Change character and text every 15 seconds
+  // Update character and message based on `realtimeScore`
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (character === "snail") {
-        setCharacter("fish");
-        setText("That's bad");
-      } else {
-        setCharacter("snail");
-        setText("Good job!");
-      }
-    }, 15000); // 15000 milliseconds = 15 seconds
+    if (player1Score || player2Score > 30) {
+      setCharacter("snail");
+      setText("🔥 Amazing performance!");
+    } else if (player1Score || player2Score > 20) {
+      setCharacter("snail");
+      setText("👍 Good job!");
+    } else {
+      setCharacter("fish");
+      setText("😐 Keep practicing!");
+    }
+  }, [player1Score, player2Score]);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [character]);
-
-  // Handle keydown events to move cars
+  // Move cars based on scores
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "d" && car1Position < maxPosition) {
-        setCar1Position((prevPosition) => prevPosition + 10); // Increment Car 1 position by 10 units
-      } else if (event.key === "a" && car2Position < maxPosition) {
-        setCar2Position((prevPosition) => prevPosition + 10); // Increment Car 2 position by 10 units
-      }
-    };
+    const newCar1Position = initialCar1Position + player1Score * 15;
+    const newCar2Position = initialCar2Position + player2Score * 15;
 
-    // Add event listener for keydown events
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup the event listener on component unmount
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [car1Position, car2Position]); // Add positions to dependencies to check the current state
+    setCar1Position(Math.min(newCar1Position, maxPosition));
+    setCar2Position(Math.min(newCar2Position, maxPosition));
+  }, [player1Score, player2Score]);
 
   return (
     <div className="game-container">
       <img src={trackImage} alt="Track" className="center-image" />
-      
-      {/* Render the cars at their respective positions */}
+
+      {/* Render cars based on their score-driven positions */}
       <Car position={car1Position} />
       <Car2 position={car2Position} />
-      
-      {character === "snail" ? (
-        <div className="character-container">
-          <Snail />
-          <div className="text-bubble">{text}</div>
-        </div>
-      ) : (
-        <div className="character-container">
-          <Fish />
-          <div className="text-bubble">{text}</div>
-        </div>
-      )}
+
+      {/* Display character reaction */}
+      <div className="character-container">
+        {character === "snail" ? <Snail /> : <Fish />}
+        <div className="text-bubble">{text}</div>
+      </div>
     </div>
   );
 };
 
 export default Graphic;
-
