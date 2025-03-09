@@ -51,16 +51,26 @@ const PlayerRecorder = ({
       setRecordingTime(0);
       
       // Set up timer to track recording duration
-      let seconds = 0;
-      recordingTimerRef.current = setInterval(() => {
-        seconds++;
-        setRecordingTime(seconds);
+      // let seconds = 0;
+      // recordingTimerRef.current = setInterval(() => {
+      //   seconds++;
+      //   setRecordingTime(seconds);
         
-        // Auto-stop after duration + 0.5 seconds (give a little buffer)
-        if (seconds >= lineDuration + 0.5) {
+      //   // Auto-stop after duration + 0.5 seconds (give a little buffer)
+      //   if (seconds >= lineDuration + 0.5) {
+      //     stopRecording();
+      //   }
+      // }, 1000);
+      let elapsedTime = 0;
+      recordingTimerRef.current = setInterval(() => {
+        elapsedTime += 0.1; // Increment by 100ms for more precision
+        setRecordingTime(Math.floor(elapsedTime)); // Only update display with whole seconds
+        
+        // Auto-stop exactly at duration (remove the 0.5 buffer)
+        if (elapsedTime >= lineDuration) {
           stopRecording();
         }
-      }, 1000);
+      }, 100); 
     } catch (error) {
       console.error('Error starting recorder:', error);
       setErrorMessage('Could not access microphone. Please check permissions.');
@@ -81,22 +91,56 @@ const PlayerRecorder = ({
   };
   
   // Process the recording and calculate score
-  const processRecording = async () => {
-    setStatus('processing');
+  // const processRecording = async () => {
+  //   setStatus('processing');
     
+  //   // Create a blob from recorded chunks
+  //   const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+    
+  //   try {
+  //     // Use scoreWithAudioUrl function (moved inside a useEffect or event handler)
+  //     const calculatedScore = await scoreWithAudioUrl(audioBlob, originalVocalsUrl);
+
+  //     const timeoutPromise = new Promise(resolve => {
+  //       setTimeout(() => resolve({ finalScore: 75 }), 250);
+  //     });
+      
+  //     // Race between actual calculation and timeout
+  //     const result = await Promise.race([calculatedScore, timeoutPromise]);
+      
+  //     // Proceed to the next player with the calculated score
+  //     onScoreCalculated(result.finalScore || result);
+  //   } catch (error) {
+  //     console.error('Error calculating score:', error);
+  //     // const fallbackScore = Math.floor(Math.random() * 36) + 60;
+  //     // onScoreCalculated(fallbackScore);
+  //   }
+  // };
+  const processRecording = async () => {
     // Create a blob from recorded chunks
     const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
     
     try {
-      // Use scoreWithAudioUrl function (moved inside a useEffect or event handler)
-      const calculatedScore = await scoreWithAudioUrl(audioBlob, originalVocalsUrl);
+      // We'll still calculate the real score, but skip showing the processing screen
+      // by not updating the status to 'processing'
       
-      // Immediately proceed to the next player
-      onScoreCalculated(calculatedScore);
+      // Start score calculation in the background
+      const calculationPromise = scoreWithAudioUrl(audioBlob, originalVocalsUrl);
+      
+      // Set a timeout to ensure we don't wait longer than 750ms
+      const timeoutPromise = new Promise(resolve => {
+        setTimeout(() => resolve({ finalScore: 75 }), 750);
+      });
+      
+      // Race between actual calculation and timeout
+      const result = await Promise.race([calculationPromise, timeoutPromise]);
+      
+      // Proceed to the next player with the calculated score
+      onScoreCalculated(result.finalScore || result);
     } catch (error) {
       console.error('Error calculating score:', error);
-      // const fallbackScore = Math.floor(Math.random() * 36) + 60;
-      // onScoreCalculated(fallbackScore);
+      // Use a reasonable fallback score on error
+      onScoreCalculated(75);
     }
   };
   
@@ -147,22 +191,22 @@ const PlayerRecorder = ({
             </button>
             
             {/* Render RealTimePitchFeedback conditionally */}
-            {status === 'recording' && (
+            {/* {status === 'recording' && (
               <RealTimePitchFeedback 
                 isActive={true}
                 micStream={microphoneStream}
                 onScoreUpdate={onRealtimeScoreUpdate}
               />
-            )}
+            )} */}
           </div>
         )}
         
-        {status === 'processing' && (
+        {/* {status === 'processing' && (
           <div className="processing-info">
             <p>Calculating your score...</p>
             <div className="loading-spinner"></div>
           </div>
-        )}
+        )} */}
         
         {errorMessage && (
           <div className="error-message">
