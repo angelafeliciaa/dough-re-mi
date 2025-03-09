@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
-import '../pages/track/game.css'
-import './AudioPlayer.css'
+import { useEffect, useRef, useState } from "react";
+import "../pages/track/game.css";
+import "./AudioPlayer.css";
+
 const AudioPlayer = ({ onTimeUpdate }) => {
     const audioRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false); // Track button click
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -16,10 +18,19 @@ const AudioPlayer = ({ onTimeUpdate }) => {
         return () => audio.removeEventListener("timeupdate", handleTimeUpdate);
     }, [onTimeUpdate]);
 
+    const handlePlay = () => {
+        audioRef.current.play();
+        setIsPlaying(true); // Hide button after click
+    };
+
     return (
         <div className="game-container">
             <audio ref={audioRef} src="/songs/espresso/clip-instrumental.mp3" />
-            <button className="record-button" onClick={() => audioRef.current.play()}>Start Karaoke</button>
+            {!isPlaying && ( // Hide button when isPlaying is true
+                <button className="record-button" onClick={handlePlay}>
+                    Start Karaoke
+                </button>
+            )}
         </div>
     );
 };
