@@ -2,20 +2,21 @@
 
 /* Global styles */
 :root {
-  --primary-color: #6200ee;
+  --primary-color: #ee008f;
   --secondary-color: #03dac6;
   --background-color: #121212;
   --surface-color: #1e1e1e;
   --text-color: #1e1e1e;
-  --accent-color: #bb86fc;
+  --accent-color: #ee5585;
   --error-color: #cf6679;
-  --success-color: #00c853;
+  --success-color: #6bac3f;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
+  background-color: rgb(240, 219, 237);
   color: var(--text-color);
 }
 
@@ -30,7 +31,7 @@ body {
   background-color: var(--primary-color);
   padding: 1rem;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.854);
 }
 
 .app-header h1 {
@@ -395,7 +396,7 @@ body {
 }
 
 .final-score {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(138, 129, 129, 0.05);
   padding: 1.5rem;
   border-radius: 8px;
   min-width: 150px;

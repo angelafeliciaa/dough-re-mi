@@ -12,8 +12,8 @@ const Graphic = ({ realtimeScore, player1Score, player2Score }) => {
   const [text, setText] = useState("Good job!");
 
   // Initial positions of the cars
-  const initialCar1Position = 110;
-  const initialCar2Position = 10;
+  const initialCar1Position = 70;
+  const initialCar2Position = -50;
   const maxPosition = 1000; // Max track length
 
   // Car movement based on score

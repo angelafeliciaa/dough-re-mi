@@ -18,6 +18,12 @@
     padding-top:10px;
  }
   
+  .center-image {
+    width: 110vh; /* Keep the track image large */
+    height: 65vh;
+    object-fit: cover;
+  }
+  
   .car-container {
     position: absolute;
     top: 55%; /* Keep the car centered vertically */
