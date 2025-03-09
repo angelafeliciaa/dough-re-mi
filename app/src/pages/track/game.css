@@ -125,7 +125,7 @@
   flex-direction: column;
   align-items: flex-start; /* Moves the scores to the left */
   position: absolute;
-  left: 15%; /* Adjust based on your layout */
+  left: 10%; /* Adjust based on your layout */
   top: 35%; /* Adjust based on your layout */
 }
 

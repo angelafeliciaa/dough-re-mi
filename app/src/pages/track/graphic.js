@@ -80,3 +80,4 @@ const Graphic = ({ realtimeScore, player1Score, player2Score }) => {
 };
 
 export default Graphic;
+
