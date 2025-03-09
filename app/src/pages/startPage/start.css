@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "PixelFont", monospace;
+  font-family: 'Pixelify Sans', sans-serif;
 }
 
 .start-container {
@@ -35,15 +35,17 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+
 }
 
 .game-title {
   font-size: 48px;
-  font-family: "PixelFont", monospace;
   letter-spacing: 2px;
   margin: 0;
   image-rendering: pixelated;
   text-align: center;
+
+  font-weight: 700;
 }
 
 .start-button, .leaderboard-button {
@@ -53,6 +55,7 @@ body {
   font-size: 32px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  font-family: 'Pixelify Sans', sans-serif;
 }
 
 .start-button:hover, .leaderboard-button:hover {
@@ -120,7 +123,6 @@ body {
 /* Heading for Name Entry */
 .name-entry-container h2 {
   font-size: 26px;
-  font-family: "PixelFont", monospace;
   text-align: center;
   color: #ff3366; /* Keeping the pink tone */
   margin-bottom: 10px;
@@ -130,14 +132,16 @@ body {
 /* Input field styling */
 .name-input {
   font-size: 18px;
+  font-family: 'Pixelify Sans', sans-serif;
   padding: 12px;
-  width: 80%;
+  width: 100%;
   border-radius: 50px; 
   text-align: center;
   outline: none;
   background-color: #f6a8d7;
   color: #333;
   box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 /* Input focus styling */
@@ -145,19 +149,7 @@ body {
   box-shadow: 0 0 8px rgba(255, 51, 102, 0.5); /* Glow effect when focused */
 }
 
-/* Submit button styling */
-.start-button {
-  border: none;
-  padding: 15px 25px;
-  font-size: 24px;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  margin-top: 10px;
-  justify-content: center;
-}
+
 
 /* Button hover effect */
 .start-button:hover, .leaderboard-button:hover {

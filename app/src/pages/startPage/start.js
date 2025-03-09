@@ -90,14 +90,14 @@ const Start = () => {
                 type="text"
                 value={name1}
                 onChange={handleName1Change}
-                placeholder="Enter your name"
+                placeholder="Enter Player 1's name"
                 className="name-input"
               />
               <input
                 type="text"
                 value={name2}
                 onChange={handleName2Change}
-                placeholder="Enter your name"
+                placeholder="Enter Player 2's name"
                 className="name-input"
               />
               <button type="submit" className="start-button">
