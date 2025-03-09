@@ -373,6 +373,7 @@ body {
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 50%;
+  margin-left: 150px;
 }
 
 .countdown-text {
@@ -382,7 +383,6 @@ body {
 
 .countdown-info {
   justify-content: center;
-  padding-left: 300px;
   align-items: center;
 }
 
