@@ -199,9 +199,9 @@ const PlayerRecorder = ({
         {status === 'recording' && (
           <div className="recording-info">
             <div className="recording-indicator">Recording... {recordingTime}s</div>
-            <button className="stop-button" onClick={stopRecording}>
+            {/* <button className="stop-button" onClick={stopRecording}>
               Stop Recording
-            </button>
+            </button> */}
           </div>
         )}
         
