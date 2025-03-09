@@ -20,7 +20,7 @@
   
   .center-image {
     width: 110vh; /* Keep the track image large */
-    height: 55vh;
+    height: 65vh;
     object-fit: cover;
   }
   

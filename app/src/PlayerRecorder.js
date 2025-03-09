@@ -172,10 +172,6 @@ const PlayerRecorder = ({
         <h3>{playerName}'s Turn</h3>
       </div>
       
-      <div className="lyrics-display">
-        <p className="lyrics-text">{lineText}</p>
-      </div>
-      
       <div className="recording-section">
         {status === 'ready' && (
           <button className="record-button" onClick={startRecording}>
