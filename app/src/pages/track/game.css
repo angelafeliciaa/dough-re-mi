@@ -7,8 +7,7 @@
   position: relative; /* Needed for absolute positioning of the car */
 }
 
-<<<<<<< HEAD
-  .game-container-outer {
+ .game-container-outer {
     background-color: #ffd6e7;
     display: flex;
     flex-direction: column;
@@ -17,7 +16,7 @@
     position: relative; /* Needed for absolute positioning of the car */
     padding-bottom: 40px;
     padding-top:10px;
-  }
+ }
   
   .center-image {
     width: 110vh; /* Keep the track image large */
@@ -121,4 +120,3 @@
   font-size: 12px; /* Adjust font size for smaller text */
   max-width: 100px; /* Limit width of the text bubble */
 }
->>>>>>> e46aa98 (car alignment)
