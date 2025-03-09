@@ -130,9 +130,9 @@ const Game = () => {
     
     // Update the score for the current player
     if (currentPlayer === 1) {
-      setPlayer1Score(prevScore => prevScore + score);
+      setPlayer1Score(prevScore => Math.round((prevScore + score)/2));
     } else {
-      setPlayer2Score(prevScore => prevScore + score - 16);
+      setPlayer2Score(prevScore => Math.round((prevScore + score)/2)-5);
     }
 
     // Move to next line or end game
