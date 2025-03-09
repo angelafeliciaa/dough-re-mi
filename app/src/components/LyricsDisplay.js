@@ -2,7 +2,7 @@ const LyricsDisplay = ({ lyrics, currentTime }) => {
     if (!lyrics || lyrics.length === 0) return <p>Loading lyrics...</p>;
 
     return (
-        <div style={{ textAlign: "center", fontSize: "20px", fontWeight: "bold" }}>
+        <div style={{ textAlign: "center", fontSize: "30px", fontWeight: "bold" }}>
             {lyrics.map((line, index) => {
                 const isActive = currentTime >= line.startTime && currentTime <= line.endTime;
                 const isPlayerA = index % 2 === 0; // Player A sings even lines

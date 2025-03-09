@@ -13,40 +13,40 @@ const PlayerRecorder = ({
   onRealtimeScoreUpdate,
   microphoneStream,
   autoStart = false,
-  // instrumentalDelay = 0 // Delay in seconds for instrumental (0 = no delay)
+  instrumentalDelay = 0 // Delay in seconds for instrumental (0 = no delay)
 }) => {
   // Add countdown state to show user how much time until recording starts
   const [status, setStatus] = useState(autoStart ? 'preparing' : 'ready'); // ready, preparing, recording, processing
   const [recordingTime, setRecordingTime] = useState(0);
-  // const [countdownTime, setCountdownTime] = useState(instrumentalDelay);
+  const [countdownTime, setCountdownTime] = useState(instrumentalDelay);
   const [errorMessage, setErrorMessage] = useState('');
   
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const recordingTimerRef = useRef(null);
-  // const countdownTimerRef = useRef(null);
+  const countdownTimerRef = useRef(null);
   
   // Determine if we need instrumental delay
-  // const needsInstrumentalDelay = instrumentalDelay > 0;
+  const needsInstrumentalDelay = instrumentalDelay > 0;
   
   // Start the countdown before recording
-  // const startCountdown = () => {
-  //   setStatus('countdown');
-  //   setCountdownTime(instrumentalDelay);
+  const startCountdown = () => {
+    setStatus('countdown');
+    setCountdownTime(instrumentalDelay);
     
-  //   // Set up countdown timer
-  //   let remainingTime = instrumentalDelay;
-  //   countdownTimerRef.current = setInterval(() => {
-  //     remainingTime -= 0.1; // Decrement by 100ms for smoother display
-  //     setCountdownTime(Math.max(0, parseFloat(remainingTime.toFixed(1))));
+    // Set up countdown timer
+    let remainingTime = instrumentalDelay;
+    countdownTimerRef.current = setInterval(() => {
+      remainingTime -= 0.1; // Decrement by 100ms for smoother display
+      setCountdownTime(Math.max(0, parseFloat(remainingTime.toFixed(1))));
       
-  //     // When countdown reaches zero, start recording
-  //     if (remainingTime <= 0) {
-  //       clearInterval(countdownTimerRef.current);
-  //       startRecording();
-  //     }
-  //   }, 100);
-  // };
+      // When countdown reaches zero, start recording
+      if (remainingTime <= 0) {
+        clearInterval(countdownTimerRef.current);
+        startRecording();
+      }
+    }, 100);
+  };
   
   // Start recording after countdown
   const startRecording = async () => {
@@ -77,7 +77,7 @@ const PlayerRecorder = ({
       setRecordingTime(0);
       
       // Set up timer to track recording duration
-      let elapsedTime = 2;
+      let elapsedTime = 1;
       recordingTimerRef.current = setInterval(() => {
         elapsedTime += 0.1; // Increment by 100ms for more precision
         setRecordingTime(Math.floor(elapsedTime)); // Only update display with whole seconds
@@ -139,14 +139,14 @@ const PlayerRecorder = ({
       // Set status to 'preparing' immediately (already done in initial state)
       const timer = setTimeout(() => {
 
-        startRecording();
+        // startRecording();
         // Start countdown if we need instrumental delay, otherwise start recording directly
-        // if (needsInstrumentalDelay) {
-        //   startCountdown();
-        // } else {
-        //   // Skip the countdown
-        //   startRecording();
-        // }
+        if (needsInstrumentalDelay) {
+          startCountdown();
+        } else {
+          // Skip the countdown
+          startRecording();
+        }
       }, 100);
       
       return () => clearTimeout(timer);
@@ -157,7 +157,7 @@ const PlayerRecorder = ({
   // Clean up timers on unmount
   useEffect(() => {
     return () => {
-      // if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
       if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
       if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
         mediaRecorderRef.current.stop();
@@ -173,28 +173,28 @@ const PlayerRecorder = ({
       
       <div className="recording-section">
         {status === 'ready' && (
-           <button className="record-button" onClick={startRecording}>
-          {/* // <button 
-          //   className="record-button" 
-          //   onClick={needsInstrumentalDelay ? startCountdown : startRecording}
-          // > */}
+          //  <button className="record-button" onClick={startRecording}>
+          <button 
+            className="record-button" 
+            onClick={needsInstrumentalDelay ? startCountdown : startRecording}
+          >
             Start Recording
           </button>
         )}
         
-        {/* {status === 'preparing' && (
+        {status === 'preparing' && (
           <div className="preparing-info">
             <p>Get ready to sing!</p>
             <div className="loading-spinner"></div>
           </div>
-        )} */}
+        )}
         
-        {/* {status === 'countdown' && (
+        {status === 'countdown' && (
           <div className="countdown-info">
-            <p>Instrumental playing... Recording starts in:</p>
+            <p className='countdown-text'>Instrumental playing... Recording starts in:</p>
             <div className="countdown-timer">{countdownTime.toFixed(1)}s</div>
           </div>
-        )} */}
+        )}
         
         {status === 'recording' && (
           <div className="recording-info">

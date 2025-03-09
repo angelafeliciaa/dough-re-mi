@@ -40,6 +40,15 @@ body {
   font-weight: 700;
 }
 
+.lyrics-display-container {
+  /* background-color: antiquewhite; */
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  width: 105vh;
+  height: 20vh;
+}
+
 /* Main content */
 .app-main {
   flex: 1;
@@ -364,6 +373,17 @@ body {
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 50%;
+}
+
+.countdown-text {
+  /* text-align: left; */
+  font-size: 20px;
+}
+
+.countdown-info {
+  justify-content: center;
+  padding-left: 300px;
+  align-items: center;
 }
 
 /* Results screen */
