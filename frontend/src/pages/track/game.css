@@ -1,0 +1,13 @@
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Align items to the top with space at the bottom */
+    height: 100vh; /* Full viewport height */
+  }
+  
+  .center-image {
+    width: 100vh;  /* Reduce the width to make it smaller */
+    height: 100vh; /* Keep the image square */
+    object-fit: cover; /* Prevent image distortion */
+  }
+  
