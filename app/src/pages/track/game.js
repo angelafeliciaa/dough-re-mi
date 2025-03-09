@@ -173,8 +173,11 @@ import React, { useState, useEffect } from 'react';
    return (
      <div className="game-container">
            <div className="">
-            <Graphic></Graphic>
-            <div />
+           <Graphic 
+              realtimeScore={realtimeScore} 
+              player1Score={player1Score} 
+              player2Score={player2Score} 
+            />
              <div className="game-info">
                <div className="player-scores">
                  <div className={`player-score ${currentPlayer === 1 ? 'active' : ''}`}>
