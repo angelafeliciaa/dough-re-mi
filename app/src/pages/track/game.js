@@ -25,7 +25,7 @@ import React, { useState, useEffect } from 'react';
      const loadSongData = async () => {
        try {
          // In a real app, this would be a fetch call to load song data
-         const response = await fetch('/songs/blinding_lights/song-data.json');
+         const response = await fetch('/songs/espresso/clip-lyrics-data.json');
          const data = await response.json();
          setSongData(data);
          setIsLoading(false);
@@ -169,8 +169,9 @@ import React, { useState, useEffect } from 'react';
    }
  
    return (
-     <div className="app">
-           <div className="game-screen">
+     <div className="game-container">
+           <div className="">
+            <div />
              <div className="game-info">
                <div className="player-scores">
                  <div className={`player-score ${currentPlayer === 1 ? 'active' : ''}`}>
