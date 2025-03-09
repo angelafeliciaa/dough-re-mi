@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Capture Test</title>
+    <style>
+        #volumeMeter {
+            width: 300px;
+            height: 30px;
+            border: 1px solid #000;
+            margin: 20px 0;
+        }
+        #volumeFill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Audio Capture Test</h1>
+    <button id="startButton">Start Microphone</button>
+    <div>
+        <p>Volume Level:</p>
+        <div id="volumeMeter"><div id="volumeFill"></div></div>
+    </div>
+    <p id="status">Waiting to start...</p>
+
+    <script>
+        async function setupAudioCapture() {
+            try {
+                // Request microphone access
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                
+                // Create audio context
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Create source from the microphone stream
+                const microphoneSource = audioContext.createMediaStreamSource(stream);
+                
+                // Create an analyzer node for processing
+                const analyser = audioContext.createAnalyser();
+                analyser.fftSize = 2048;
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Float32Array(bufferLength);
+                
+                // Connect the microphone to the analyzer
+                microphoneSource.connect(analyser);
+                
+                document.getElementById('status').textContent = 'Microphone connected and capturing audio!';
+                
+                return {
+                    stream,
+                    audioContext,
+                    analyser,
+                    microphoneSource,
+                    dataArray
+                };
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                document.getElementById('status').textContent = 'Error: ' + error.message;
+                return null;
+            }
+        }
+
+        // Volume meter visualization
+        function updateVolumeMeter(analyser, dataArray) {
+            analyser.getFloatTimeDomainData(dataArray);
+            
+            // Calculate RMS (root mean square) to get volume
+            let sumOfSquares = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sumOfSquares += dataArray[i] * dataArray[i];
+            }
+            const rms = Math.sqrt(sumOfSquares / dataArray.length);
+            
+            // Convert to percentage (amplify it a bit for better visualization)
+            const volume = Math.min(100, rms * 20 * 100);
+            
+            // Update volume meter
+            document.getElementById('volumeFill').style.width = volume + '%';
+            
+            requestAnimationFrame(() => updateVolumeMeter(analyser, dataArray));
+        }
+
+        // Event listener for start button
+        document.getElementById('startButton').addEventListener('click', async () => {
+            const audio = await setupAudioCapture();
+            if (audio) {
+                updateVolumeMeter(audio.analyser, audio.dataArray);
+            }
+        });
+    </script>
+</body>
+</html>
