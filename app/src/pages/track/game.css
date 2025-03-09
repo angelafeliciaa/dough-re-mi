@@ -32,7 +32,7 @@
   
   .car-container1 {
     position: absolute;
-    top: 50%; /* Keep the car centered vertically */
+    top: 80%; /* Keep the car centered vertically */
   }
   
   .car-image {
@@ -84,11 +84,6 @@
   transform: translate(-50%, -50%) scaleX(-1); /* Flip the car horizontally */
 }
 
-.car-container1 {
-  position: absolute;
-  top: 48%; 
-  left: 10%; /* Move the second car to the left */
-}
 
 .car-image {
   width: 250px; /* Large car */
