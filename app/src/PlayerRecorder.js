@@ -147,13 +147,13 @@ const PlayerRecorder = ({
             </button>
             
             {/* Render RealTimePitchFeedback conditionally */}
-            {status === 'recording' && (
+            {/* {status === 'recording' && (
               <RealTimePitchFeedback 
                 isActive={true}
                 micStream={microphoneStream}
                 onScoreUpdate={onRealtimeScoreUpdate}
               />
-            )}
+            )} */}
           </div>
         )}
         
