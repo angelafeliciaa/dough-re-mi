@@ -107,3 +107,29 @@ body {
     width: 20px;
     height: 20px;
   }
+
+  .no-items {
+    text-align: center;
+    font-size: 18px;
+    color: gray;
+    margin-top: 20px;
+  }
+  
+ /* Start Over button */
+ .play-again-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  color: black;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+}
+
+.play-again-button:hover {
+  background: #ffccdd;
+}

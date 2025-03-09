@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './PlayerRecorder.css'; // Create this file for styling
 import RealTimePitchFeedback from './RealTimePitchFeedback';
 import { scoreWithAudioUrl } from './pitchComparison'; // Import the scoring function
+import "./PlayerRecorder.css";
 
 const PlayerRecorder = ({ 
   playerName, 
