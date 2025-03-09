@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
  import PlayerRecorder from '../../PlayerRecorder';
  import "./game.css"
  import Karaoke from '../../components/Karaoke';
+ import Graphic from './graphic'
  
  const Game = () => {
    const [gameState, setGameState] = useState('setup'); // setup, playing, results
@@ -172,6 +173,7 @@ import React, { useState, useEffect } from 'react';
    return (
      <div className="game-container">
            <div className="">
+            <Graphic></Graphic>
             <div />
              <div className="game-info">
                <div className="player-scores">
