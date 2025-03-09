@@ -23,6 +23,31 @@ const Game = () => {
   const [player1Name, setPlayer1Name] = useState(localStorage.getItem('playerName1') || 'Player 1');
   const [player2Name, setPlayer2Name] = useState(localStorage.getItem('playerName2') || 'Player 2');
 
+  // Button styles
+  const buttonStyle = {
+    backgroundColor: '#ee5585',
+    color: 'white',
+    padding: '12px 24px',
+    margin: '10px',
+    border: 'none',
+    borderRadius: '4px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+  };
+
+  // Button container style
+  const buttonContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    marginTop: '20px'
+  };
+
   const saveScore = (name, score) => {
     let leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
   
@@ -233,19 +258,6 @@ const Game = () => {
               </div>
             </div>
             
-            {/* <PlayerRecorder
-              key={`player-${currentPlayer}-line-${currentLineIndex}`}
-              playerName={getCurrentPlayerName()} 
-              lineText={songData.lyrics[currentLineIndex].text}
-              originalVocalsUrl={songData.vocalsUrl}
-              lineDuration={songData.lyrics[currentLineIndex].duration || 
-                          (songData.lyrics[currentLineIndex].endTime - 
-                           songData.lyrics[currentLineIndex].startTime)}
-              onScoreCalculated={handleScoreCalculated}
-              onRealtimeScoreUpdate={handleRealtimeScoreUpdate}
-              microphoneStream={microphoneStream}
-              autoStart={currentLineIndex > 0}
-            /> */}
             <PlayerRecorder
               key={`player-${currentPlayer}-line-${currentLineIndex}`}
               playerName={getCurrentPlayerName()} 
@@ -290,9 +302,27 @@ const Game = () => {
                 ? `${player2Name} wins!`
                 : "It's a tie!"}
           </div>
-          <button onClick={handleSaveScore} className='save-to-leaderboard-button'>Save To Leaderboard</button>
-          <button onClick={handleViewLeaderboard} className='view-leaderboard-button'>View Leaderboard</button>
-          <button onClick={handlePlayAgain} className='play-again-button'>Play Again</button>
+          
+          <div style={buttonContainerStyle}>
+            <button 
+              onClick={handleSaveScore} 
+              style={buttonStyle}
+            >
+              Save To Leaderboard
+            </button>
+            <button 
+              onClick={handleViewLeaderboard} 
+              style={buttonStyle}
+            >
+              View Leaderboard
+            </button>
+            <button 
+              onClick={handlePlayAgain} 
+              style={buttonStyle}
+            >
+              Play Again
+            </button>
+          </div>
         </div>
       )}
     </div>
@@ -300,5 +330,3 @@ const Game = () => {
 };
 
 export default Game;
-
-
