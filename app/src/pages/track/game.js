@@ -224,12 +224,12 @@ const Game = () => {
           
           <div className="final-scores">
             <div className="final-score">
-              <h3>{player1Name}</h3>
+              <h3 className='playername'>{player1Name}</h3>
               <div className="score">{player1Score}</div>
             </div>
             
             <div className="final-score">
-              <h3>{player2Name}</h3>
+              <h3 className='playername'>{player2Name}</h3>
               <div className="score">{player2Score}</div>
             </div>
           </div>

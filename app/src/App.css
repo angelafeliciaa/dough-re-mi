@@ -401,6 +401,10 @@ body {
   min-width: 150px;
 }
 
+.playername {
+  color: var(--accent-color);
+}
+
 .final-score h3 {
   margin-top: 0;
   margin-bottom: 1rem;
