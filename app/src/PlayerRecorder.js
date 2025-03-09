@@ -14,46 +14,20 @@ const PlayerRecorder = ({
   microphoneStream,
   autoStart = false
 }) => {
-  const [status, setStatus] = useState('ready'); // ready, countdown, recording, processing
-  const [countdown, setCountdown] = useState(3);
+  const [status, setStatus] = useState('ready'); // ready, recording, processing
   const [recordingTime, setRecordingTime] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
   
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const countdownTimerRef = useRef(null);
   const recordingTimerRef = useRef(null);
   
-  // Start the countdown to recording
-  const startCountdown = async () => {
+  // Start recording directly
+  const startRecording = async () => {
     try {
       // Use the provided microphoneStream if available, otherwise request a new one
       const stream = microphoneStream || await navigator.mediaDevices.getUserMedia({ audio: true });
       
-      // Begin the countdown
-      setStatus('countdown');
-      setCountdown(3);
-      
-      countdownTimerRef.current = setInterval(() => {
-        setCountdown(prevCount => {
-          if (prevCount <= 1) {
-            clearInterval(countdownTimerRef.current);
-            startRecording(stream);
-            return 0;
-          }
-          return prevCount - 1;
-        });
-      }, 1000);
-    } catch (error) {
-      console.error('Error accessing microphone:', error);
-      setErrorMessage('Could not access microphone. Please check permissions.');
-      setStatus('ready');
-    }
-  };
-  
-  // Start recording
-  const startRecording = (stream) => {
-    try {
       // Create media recorder using the provided stream
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
@@ -117,10 +91,6 @@ const PlayerRecorder = ({
       // Use scoreWithAudioUrl function (moved inside a useEffect or event handler)
       const calculatedScore = await scoreWithAudioUrl(audioBlob, originalVocalsUrl);
       
-      // Use a score between 60-95 if the real scoring fails
-    //   const calculatedScore = Math.floor(Math.random() * 36) + 60;
-
-      
       // Immediately proceed to the next player
       onScoreCalculated(calculatedScore);
     } catch (error) {
@@ -134,9 +104,9 @@ const PlayerRecorder = ({
   // Auto-start recording if autoStart is true
   useEffect(() => {
     if (autoStart && microphoneStream) {
-      // Automatically start the countdown after a short delay
+      // Automatically start recording after a short delay
       const timer = setTimeout(() => {
-        startCountdown();
+        startRecording();
       }, 1000);
       
       return () => clearTimeout(timer);
@@ -146,7 +116,6 @@ const PlayerRecorder = ({
   // Clean up timers on unmount
   useEffect(() => {
     return () => {
-      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
       if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
       if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
         mediaRecorderRef.current.stop();
@@ -166,15 +135,9 @@ const PlayerRecorder = ({
       
       <div className="recording-section">
         {status === 'ready' && (
-          <button className="record-button" onClick={startCountdown}>
+          <button className="record-button" onClick={startRecording}>
             Start Recording
           </button>
-        )}
-        
-        {status === 'countdown' && (
-          <div className="countdown">
-            <span className="countdown-number">{countdown}</span>
-          </div>
         )}
         
         {status === 'recording' && (
