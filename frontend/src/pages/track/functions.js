@@ -1,8 +1,8 @@
 // App.js with auto-transition between players
 import React, { useState, useEffect } from 'react';
-import PlayerRecorder from '../PlayerRecorder/PlayerRecorder';
+import PlayerRecorder from '../../PlayerRecorder';
 
-const MainGame = () => {
+const Functions = () => {
   const [gameState, setGameState] = useState('setup'); // setup, playing, results
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
@@ -261,4 +261,4 @@ const MainGame = () => {
   );
 };
 
-export default MainGame;
+export default Functions;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./start.css";
 import bread from "../../assets/pastryicons/bread.png";
 import tart from "../../assets/pastryicons/pie.png";
@@ -11,9 +11,10 @@ import cinnamonRoll from "../../assets/pastryicons/cinnamon.png";
 import cdIcon from "../../assets/pastryicons/cd.png";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-function Start() {
+const Start = () => {
   const [started, setStarted] = useState(false);
-  const [name, setName] = useState("");
+  const [name1, setName1] = useState("");
+  const [name2, setName2] = useState("");
   const navigate = useNavigate(); // Initialize useNavigate
 
   const items = [
@@ -29,10 +30,9 @@ function Start() {
 
   const handleGameSubmit = (e) => {
     e.preventDefault();
-    if (name) {
-      // Store the name in localStorage if necessary
-      localStorage.setItem("playerName", name);
-      // Navigate to /game
+    if (name1 && name2) {
+      localStorage.setItem("playerName1", name1);
+      localStorage.setItem("playerName2", name2);
       navigate("/game");
     } else {
       alert("Please enter your name before starting!");
@@ -43,8 +43,12 @@ function Start() {
     setStarted(true); // Switch to name entry form
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value); // Update name as user types
+  const handleName1Change = (e) => {
+    setName1(e.target.value); // Update name as user types
+  };
+
+  const handleName2Change = (e) => {
+    setName2(e.target.value); // Update name as user types
   };
 
   return (
@@ -77,8 +81,15 @@ function Start() {
             <form onSubmit={handleGameSubmit} className="name-form">
               <input
                 type="text"
-                value={name}
-                onChange={handleNameChange}
+                value={name1}
+                onChange={handleName1Change}
+                placeholder="Enter your name"
+                className="name-input"
+              />
+              <input
+                type="text"
+                value={name2}
+                onChange={handleName2Change}
                 placeholder="Enter your name"
                 className="name-input"
               />

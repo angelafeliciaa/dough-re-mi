@@ -6,7 +6,7 @@
   --secondary-color: #03dac6;
   --background-color: #121212;
   --surface-color: #1e1e1e;
-  --text-color: #ffffff;
+  --text-color: #1e1e1e;
   --accent-color: #bb86fc;
   --error-color: #cf6679;
   --success-color: #00c853;
@@ -61,7 +61,6 @@ body {
 }
 
 .start-button {
-  background-color: var(--accent-color);
   color: var(--background-color);
   border: none;
   border-radius: 4px;
@@ -74,7 +73,6 @@ body {
 }
 
 .start-button:hover {
-  background-color: var(--primary-color);
   transform: translateY(-2px);
 }
 
