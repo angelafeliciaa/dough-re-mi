@@ -20,6 +20,7 @@ import React, { useState, useEffect } from 'react';
    const [player1Name, setPlayer1Name] = useState(localStorage.getItem('playerName1') || 'Player 1');
    const [player2Name, setPlayer2Name] = useState(localStorage.getItem('playerName2') || 'Player 2');
    
+   // trying
    // Load song data on component mount
    useEffect(() => {
      const loadSongData = async () => {
