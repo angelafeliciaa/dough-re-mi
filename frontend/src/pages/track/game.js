@@ -1,7 +1,11 @@
 // App.js with auto-transition between players
 import React, { useState, useEffect } from 'react';
 import PlayerRecorder from '../../PlayerRecorder';
-import "./game.css"
+import "./game.css";
+import trackImage from '../../assets/pastryicons/racetrack.png';
+import Car from '/Users/amycao/Desktop/dough-re-mi/frontend/src/pages/track/car.js'; 
+import Car2 from '/Users/amycao/Desktop/dough-re-mi/frontend/src/pages/track/car2.js';
+import "./game.css";
 
 const Game = () => {
   const [gameState, setGameState] = useState('setup'); // setup, playing, results
@@ -169,8 +173,10 @@ const Game = () => {
   }
 
   return (
-    <div className="app">
-          <div className="game-screen">
+    <div className="game-container" className="app">
+          <div className="<img src={trackImage} alt="Track" className="center-image" />
+      <Car />
+      <Car2 />-screen">
             <div className="game-info">
               <div className="player-scores">
                 <div className={`player-score ${currentPlayer === 1 ? 'active' : ''}`}>
@@ -242,4 +248,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default Game;;
