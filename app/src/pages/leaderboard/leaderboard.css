@@ -1,0 +1,110 @@
+/* Ensure the entire background is pink */
+body {
+    background-color: pink;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Leaderboard container */
+  .leaderboard-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: pink; /* Ensure fallback in case body style doesn't apply */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* Header section */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .flags {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .flag-image {
+    width: 50px;
+    height: auto;
+  }
+  
+  .title {
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+  }
+  
+  /* Leaderboard Entries */
+  .entries {
+    width: 80%;
+    max-width: 400px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 18px;
+  }
+  
+  .entry:last-child {
+    border-bottom: none;
+  }
+  
+  .rank {
+    font-weight: bold;
+  }
+  
+  .name {
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 10px;
+  }
+  
+  .score {
+    font-weight: bold;
+  }
+  
+  /* Navigation section */
+  .navigation {
+    margin-top: 20px;
+  }
+  
+  /* Start Over button */
+  .start-over-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .start-over-button:hover {
+    background: #ffccdd;
+  }
+  
+  .cd-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
