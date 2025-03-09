@@ -32,17 +32,18 @@ const Leaderboard = () => {
 
   const handleStartOver = () => {
 
-    navigate('/'); 
+    navigate('/'); // Adjust this path based on your route configuration
   };
 
   return (
     <div className="leaderboard-container">
-
+      {/* Flags and Title */}
       <div className="header">
         <div className="flags">
+          {/* Centered flag image */}
           <div className="flag">
             <img
-              src={flagImage}  
+              src={flagImage}  // Ensure to use the imported flagImage variable
               alt="Flag"
               className="flag-image"
             />
