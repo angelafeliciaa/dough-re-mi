@@ -55,7 +55,7 @@ const Graphic = ({ realtimeScore, player1Score, player2Score }) => {
 
   // Move cars based on scores
   useEffect(() => {
-    const newCar1Position = initialCar1Position + player1Score * 105
+    const newCar1Position = initialCar1Position + player1Score * 15;
     const newCar2Position = initialCar2Position + player2Score * 15;
 
     setCar1Position(Math.min(newCar1Position, maxPosition));

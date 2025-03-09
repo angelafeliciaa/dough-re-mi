@@ -217,6 +217,7 @@ const Game = () => {
           player1Score={player1Score} 
           player2Score={player2Score} 
         />
+        </div>
         
         {/* Only show game info and player recorder when not in results state */}
         {gameState !== 'results' && (
@@ -247,7 +248,6 @@ const Game = () => {
             />
           </>
         )}
-      </div>
 
       {/* Only show Karaoke when not in results state */}
       {gameState !== 'results' && <Karaoke />}

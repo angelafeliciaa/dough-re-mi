@@ -1,0 +1,11 @@
+.record-button, .stop-button {
+    display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 32px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  font-family: 'Pixelify Sans', sans-serif;
+  border: none;
+  border-radius: 20px;
+}
