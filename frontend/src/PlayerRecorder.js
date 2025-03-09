@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './PlayerRecorder.css'; // Create this file for styling
 import RealTimePitchFeedback from './RealTimePitchFeedback';
+import { scoreWithAudioUrl } from './pitchComparison'; // Import the scoring function
 
 const PlayerRecorder = ({ 
   playerName, 
@@ -106,24 +107,28 @@ const PlayerRecorder = ({
   };
   
   // Process the recording and calculate score
-  const processRecording = () => {
+  const processRecording = async () => {
     setStatus('processing');
     
     // Create a blob from recorded chunks
     const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
     
-    // In a real app, you'd call your actual scoreWithAudioUrl function here
-    // For now, we'll use the existing real-time score or generate a random one
-    
-    // Use a minimal delay to make it feel like we're processing
-    setTimeout(() => {
-      // Get a score between 60-95 based on the last real-time score if available
-      // or just use a random score
-      const score = Math.floor(Math.random() * 36) + 60;
+    try {
+      // Use scoreWithAudioUrl function (moved inside a useEffect or event handler)
+      const calculatedScore = await scoreWithAudioUrl(audioBlob, originalVocalsUrl);
       
-      // Immediately proceed to the next player without waiting
-      onScoreCalculated(score);
-    }, 500); // Reduced from 1500ms to 500ms for faster transitions
+      // Use a score between 60-95 if the real scoring fails
+    //   const calculatedScore = Math.floor(Math.random() * 36) + 60;
+
+      
+      // Immediately proceed to the next player
+      onScoreCalculated(calculatedScore);
+    } catch (error) {
+      console.error('Error calculating score:', error);
+      // Fallback to random score
+      const fallbackScore = Math.floor(Math.random() * 36) + 60;
+      onScoreCalculated(fallbackScore);
+    }
   };
   
   // Auto-start recording if autoStart is true
@@ -179,12 +184,14 @@ const PlayerRecorder = ({
               Stop Recording
             </button>
             
-            {/* Add real-time pitch feedback when recording */}
-            <RealTimePitchFeedback 
-              isActive={status === 'recording'}
-              micStream={microphoneStream || window.microphoneStream}
-              onScoreUpdate={onRealtimeScoreUpdate}
-            />
+            {/* Render RealTimePitchFeedback conditionally */}
+            {status === 'recording' && (
+              <RealTimePitchFeedback 
+                isActive={true}
+                micStream={microphoneStream}
+                onScoreUpdate={onRealtimeScoreUpdate}
+              />
+            )}
           </div>
         )}
         

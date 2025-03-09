@@ -271,7 +271,10 @@ export async function scoreWithAudioUrl(playerRecording, originalVocalsUrl) {
     // Fetch the original vocals audio
     const response = await fetch(originalVocalsUrl);
     const originalBlob = await response.blob();
-    
+
+    console.log("response", response);
+    console.log("originalbob", originalBlob);
+
     // Compare and return score
     return await getQuickScore(playerRecording, originalBlob);
   } catch (error) {

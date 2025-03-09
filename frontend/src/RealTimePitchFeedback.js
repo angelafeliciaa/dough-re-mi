@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { YIN } from 'pitchfinder';
 
 const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPitches }) => {
@@ -10,97 +10,18 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
   
   const [currentPitch, setCurrentPitch] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
-  const [, setPitchHistory] = useState([]);
+  const pitchHistoryRef = useRef([]);
   
   // Initialize expected pitches if not provided
   const expectedPitchesRef = useRef(expectedPitches || []);
-  
-  useEffect(() => {
-    if (!isActive || !micStream) return;
-    
-    // Set up audio context and analyzer
-    audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-    analyzerRef.current = audioContextRef.current.createAnalyser();
-    analyzerRef.current.fftSize = 2048;
-    
-    // Connect microphone to analyzer
-    sourceRef.current = audioContextRef.current.createMediaStreamSource(micStream);
-    sourceRef.current.connect(analyzerRef.current);
-    
-    // Create pitch detector
-    const detector = YIN({ 
-      sampleRate: audioContextRef.current.sampleRate,
-      threshold: 0.2
-    });
-    
-    // Start the detection loop
-    const detectPitch = () => {
-      const bufferLength = analyzerRef.current.fftSize;
-      const dataArray = new Float32Array(bufferLength);
-      
-      analyzerRef.current.getFloatTimeDomainData(dataArray);
-      
-      // Calculate volume to detect silence
-      let sum = 0;
-      for (let i = 0; i < dataArray.length; i++) {
-        sum += Math.abs(dataArray[i]);
-      }
-      const average = sum / dataArray.length;
-      
-      // Only process if not silent
-      if (average > 0.01) {
-        const pitch = detector(dataArray);
-        if (pitch) {
-          // Update current pitch
-          setCurrentPitch(Math.round(pitch));
-          
-          // Add to pitch history (keep only last 10 pitches)
-          setPitchHistory(prev => {
-            const newHistory = [...prev, pitch].slice(-10);
-            
-            // Calculate real-time score based on pitch history
-            const newScore = calculateRealTimeScore(newHistory);
-            setCurrentScore(newScore);
-            
-            // Notify parent component
-            if (onScoreUpdate) {
-              onScoreUpdate(newScore);
-            }
-            
-            return newHistory;
-          });
-          
-          // Draw visualization
-          drawPitchVisualization(pitch);
-        }
-      } else {
-        setCurrentPitch(0);
-        clearCanvas();
-      }
-      
-      animationRef.current = requestAnimationFrame(detectPitch);
-    };
-    
-    animationRef.current = requestAnimationFrame(detectPitch);
-    
-    return () => {
-      cancelAnimationFrame(animationRef.current);
-      if (sourceRef.current) {
-        sourceRef.current.disconnect();
-      }
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
-    };
-  }, [isActive, micStream, onScoreUpdate]);
-  
-  // Calculate a real-time score based on pitch history
-  const calculateRealTimeScore = (pitchHistory) => {
+
+  // Move score calculation to useCallback to avoid re-creation on every render
+  const calculateRealTimeScore = useCallback((pitchHistory) => {
     // If we have expected pitches, compare to them
     if (expectedPitchesRef.current && expectedPitchesRef.current.length > 0) {
       // Simple implementation - get current expected pitch based on time
       // In a real app, you'd sync this with the song playback
-      const currentTime = audioContextRef.current.currentTime;
+      const currentTime = audioContextRef.current?.currentTime || 0;
       const expectedPitch = getExpectedPitchAtTime(currentTime);
       
       if (!expectedPitch) return 50; // Default score if no expected pitch
@@ -138,10 +59,10 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
     if (avgVariation < 50) return 70; // Somewhat stable
     if (avgVariation < 100) return 60; // Varying
     return 50; // Unstable
-  };
+  }, []);
   
   // Helper function to get expected pitch at a given time
-  const getExpectedPitchAtTime = (time) => {
+  const getExpectedPitchAtTime = useCallback((time) => {
     // Simplified implementation - in a real app, you'd match with song data
     // This assumes expectedPitches is an array of {time, frequency} objects
     if (!expectedPitchesRef.current || expectedPitchesRef.current.length === 0) {
@@ -161,10 +82,10 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
     }
     
     return closestPitch.frequency;
-  };
+  }, []);
   
   // Draw visualization on canvas
-  const drawPitchVisualization = (pitch) => {
+  const drawPitchVisualization = useCallback((pitch) => {
     if (!canvasRef.current) return;
     
     const canvas = canvasRef.current;
@@ -210,7 +131,7 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
     drawNoteLines(ctx, width, height);
     
     // Draw expected pitch if available
-    if (expectedPitchesRef.current && expectedPitchesRef.current.length > 0) {
+    if (expectedPitchesRef.current && expectedPitchesRef.current.length > 0 && audioContextRef.current) {
       const currentTime = audioContextRef.current.currentTime;
       const expectedPitch = getExpectedPitchAtTime(currentTime);
       
@@ -228,10 +149,10 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
         ctx.stroke();
       }
     }
-  };
+  }, [currentScore, getExpectedPitchAtTime]);
   
   // Draw horizontal lines for common notes
-  const drawNoteLines = (ctx, width, height) => {
+  const drawNoteLines = useCallback((ctx, width, height) => {
     const notes = [
       { name: 'C3', freq: 130.81 },
       { name: 'E3', freq: 164.81 },
@@ -260,10 +181,10 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
       ctx.font = '12px sans-serif';
       ctx.fillText(note.name, 5, y - 5);
     });
-  };
+  }, []);
   
   // Clear the canvas
-  const clearCanvas = () => {
+  const clearCanvas = useCallback(() => {
     if (!canvasRef.current) return;
     
     const canvas = canvasRef.current;
@@ -272,7 +193,84 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
     
     // Still draw the note lines
     drawNoteLines(ctx, canvas.width, canvas.height);
-  };
+  }, [drawNoteLines]);
+  
+  // Main pitch detection effect
+  useEffect(() => {
+    if (!isActive || !micStream) return;
+    
+    // Set up audio context and analyzer
+    audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+    analyzerRef.current = audioContextRef.current.createAnalyser();
+    analyzerRef.current.fftSize = 2048;
+    
+    // Connect microphone to analyzer
+    sourceRef.current = audioContextRef.current.createMediaStreamSource(micStream);
+    sourceRef.current.connect(analyzerRef.current);
+    
+    // Create pitch detector
+    const detector = YIN({ 
+      sampleRate: audioContextRef.current.sampleRate,
+      threshold: 0.2
+    });
+    
+    // Start the detection loop
+    const detectPitch = () => {
+      const bufferLength = analyzerRef.current.fftSize;
+      const dataArray = new Float32Array(bufferLength);
+      
+      analyzerRef.current.getFloatTimeDomainData(dataArray);
+      
+      // Calculate volume to detect silence
+      let sum = 0;
+      for (let i = 0; i < dataArray.length; i++) {
+        sum += Math.abs(dataArray[i]);
+      }
+      const average = sum / dataArray.length;
+      
+      // Only process if not silent
+      if (average > 0.01) {
+        const pitch = detector(dataArray);
+        if (pitch) {
+          // Update current pitch
+          setCurrentPitch(Math.round(pitch));
+          
+          // Add to pitch history (keep only last 10 pitches)
+          const newHistory = [...pitchHistoryRef.current, pitch].slice(-10);
+          pitchHistoryRef.current = newHistory;
+          
+          // Calculate real-time score based on pitch history
+          const newScore = calculateRealTimeScore(newHistory);
+          setCurrentScore(newScore);
+          
+          // Notify parent component
+          if (onScoreUpdate) {
+            onScoreUpdate(newScore);
+          }
+          
+          // Draw visualization
+          drawPitchVisualization(pitch);
+        }
+      } else {
+        setCurrentPitch(0);
+        clearCanvas();
+      }
+      
+      animationRef.current = requestAnimationFrame(detectPitch);
+    };
+    
+    animationRef.current = requestAnimationFrame(detectPitch);
+    
+    return () => {
+      cancelAnimationFrame(animationRef.current);
+      if (sourceRef.current) {
+        sourceRef.current.disconnect();
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, [isActive, micStream, calculateRealTimeScore, drawPitchVisualization, clearCanvas, onScoreUpdate]);
   
   return (
     <div className="real-time-pitch">
