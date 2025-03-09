@@ -211,7 +211,7 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
     // Create pitch detector
     const detector = YIN({ 
       sampleRate: audioContextRef.current.sampleRate,
-      threshold: 0.2
+      threshold: 0.9
     });
     
     // Start the detection loop
@@ -236,7 +236,7 @@ const RealTimePitchFeedback = ({ isActive, micStream, onScoreUpdate, expectedPit
           setCurrentPitch(Math.round(pitch));
           
           // Add to pitch history (keep only last 10 pitches)
-          const newHistory = [...pitchHistoryRef.current, pitch].slice(-10);
+          const newHistory = [...pitchHistoryRef.current, pitch].slice(-400);
           pitchHistoryRef.current = newHistory;
           
           // Calculate real-time score based on pitch history
