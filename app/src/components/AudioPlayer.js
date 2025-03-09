@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-
+import '../pages/track/game.css'
+import './AudioPlayer.css'
 const AudioPlayer = ({ onTimeUpdate }) => {
     const audioRef = useRef(null);
 
@@ -16,9 +17,9 @@ const AudioPlayer = ({ onTimeUpdate }) => {
     }, [onTimeUpdate]);
 
     return (
-        <div>
+        <div className="game-container">
             <audio ref={audioRef} src="/songs/espresso/clip-instrumental.mp3" />
-            <button onClick={() => audioRef.current.play()}>Start Karaoke</button>
+            <button className="record-button" onClick={() => audioRef.current.play()}>Start Karaoke</button>
         </div>
     );
 };
