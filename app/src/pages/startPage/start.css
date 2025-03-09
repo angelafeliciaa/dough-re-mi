@@ -136,6 +136,7 @@ body {
   padding: 12px;
   width: 100%;
   border-radius: 50px; 
+  border: none;
   text-align: center;
   outline: none;
   background-color: #f6a8d7;

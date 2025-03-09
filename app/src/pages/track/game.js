@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PlayerRecorder from '../../PlayerRecorder';
 import "./game.css"
 import Karaoke from '../../components/Karaoke';
 import Graphic from './graphic'
 
 const Game = () => {
+  const navigate  = useNavigate();
   const [gameState, setGameState] = useState('setup'); // setup, playing, results
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
@@ -20,6 +22,29 @@ const Game = () => {
 
   const [player1Name, setPlayer1Name] = useState(localStorage.getItem('playerName1') || 'Player 1');
   const [player2Name, setPlayer2Name] = useState(localStorage.getItem('playerName2') || 'Player 2');
+
+  const saveScore = (name, score) => {
+    let leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+  
+    // Check if leaderboard exists in localStorage
+    if (!leaderboard) {
+      leaderboard = []; // Initialize it if it doesn't exist
+    }
+  
+    // Add the new score to the leaderboard
+    leaderboard.push({ name, score });
+  
+    // Sort leaderboard in descending order by score
+    //leaderboard.sort((a, b) => b.score - a.score);
+  
+    // Save the updated leaderboard back to localStorage
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+  };
+
+  const handleSaveScore = () => {
+    saveScore(player1Name, player1Score);
+    saveScore(player2Name, player2Score);
+  }
   
   // trying
   // Load song data on component mount
@@ -175,9 +200,17 @@ const Game = () => {
     return <div className="loading">Loading song data...</div>;
   }
 
+  const handleViewLeaderboard = () => {
+    navigate("/leaderboard"); // Navigates to leaderboard page
+  };
+
+  const handlePlayAgain = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="game-container-outer">
-      <div className="">
+      <div className="graphic">
         <Graphic 
           realtimeScore={realtimeScore} 
           player1Score={player1Score} 
@@ -241,7 +274,9 @@ const Game = () => {
                 ? `${player2Name} wins!`
                 : "It's a tie!"}
           </div>
-          
+          <button onClick={handleSaveScore} className='start-button'>Save To Leaderboard</button>
+          <button onClick={handleViewLeaderboard} className='start-button'>View Leaderboard</button>
+          <button onClick={handlePlayAgain} className='start-button'>Play Again</button>
         </div>
       )}
     </div>
