@@ -198,7 +198,7 @@ const Game = () => {
               </div>
             </div>
             
-            <PlayerRecorder
+            {/* <PlayerRecorder
               key={`player-${currentPlayer}-line-${currentLineIndex}`}
               playerName={getCurrentPlayerName()} 
               lineText={songData.lyrics[currentLineIndex].text}
@@ -210,6 +210,20 @@ const Game = () => {
               onRealtimeScoreUpdate={handleRealtimeScoreUpdate}
               microphoneStream={microphoneStream}
               autoStart={currentLineIndex > 0}
+            /> */}
+            <PlayerRecorder
+              key={`player-${currentPlayer}-line-${currentLineIndex}`}
+              playerName={getCurrentPlayerName()} 
+              lineText={songData.lyrics[currentLineIndex].text}
+              originalVocalsUrl={songData.vocalsUrl}
+              lineDuration={songData.lyrics[currentLineIndex].duration || 
+                          (songData.lyrics[currentLineIndex].endTime - 
+                          songData.lyrics[currentLineIndex].startTime)}
+              onScoreCalculated={handleScoreCalculated}
+              onRealtimeScoreUpdate={handleRealtimeScoreUpdate}
+              microphoneStream={microphoneStream}
+              autoStart={currentLineIndex > 0}
+              instrumentalDelay={currentLineIndex === 0 && currentPlayer === 1 ? 8.8 : 0}
             />
           </>
         )}

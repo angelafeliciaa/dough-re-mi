@@ -11,18 +11,43 @@ const PlayerRecorder = ({
   onScoreCalculated,
   onRealtimeScoreUpdate,
   microphoneStream,
-  autoStart = false
+  autoStart = false,
+  instrumentalDelay = 0 // Delay in seconds for instrumental (0 = no delay)
 }) => {
-  // Add a new "preparing" state to handle the auto-start delay
-  const [status, setStatus] = useState(autoStart ? 'preparing' : 'ready'); // ready, preparing, recording, processing
+  // Add countdown state to show user how much time until recording starts
+  const [status, setStatus] = useState(autoStart ? 'preparing' : 'ready'); // ready, preparing, countdown, recording, processing
   const [recordingTime, setRecordingTime] = useState(0);
+  const [countdownTime, setCountdownTime] = useState(instrumentalDelay);
   const [errorMessage, setErrorMessage] = useState('');
   
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const recordingTimerRef = useRef(null);
+  const countdownTimerRef = useRef(null);
   
-  // Start recording directly
+  // Determine if we need instrumental delay
+  const needsInstrumentalDelay = instrumentalDelay > 0;
+  
+  // Start the countdown before recording
+  const startCountdown = () => {
+    setStatus('countdown');
+    setCountdownTime(instrumentalDelay);
+    
+    // Set up countdown timer
+    let remainingTime = instrumentalDelay;
+    countdownTimerRef.current = setInterval(() => {
+      remainingTime -= 0.1; // Decrement by 100ms for smoother display
+      setCountdownTime(Math.max(0, parseFloat(remainingTime.toFixed(1))));
+      
+      // When countdown reaches zero, start recording
+      if (remainingTime <= 0) {
+        clearInterval(countdownTimerRef.current);
+        startRecording();
+      }
+    }, 100);
+  };
+  
+  // Start recording after countdown
   const startRecording = async () => {
     try {
       // Use the provided microphoneStream if available, otherwise request a new one
@@ -107,22 +132,28 @@ const PlayerRecorder = ({
     }
   };
   
-  // Auto-start recording if autoStart is true
+  // Auto-start countdown or recording based on if instrumental delay is needed
   useEffect(() => {
     if (autoStart && microphoneStream) {
       // Set status to 'preparing' immediately (already done in initial state)
-      // then start recording after a short delay
       const timer = setTimeout(() => {
-        startRecording();
+        // Start countdown if we need instrumental delay, otherwise start recording directly
+        if (needsInstrumentalDelay) {
+          startCountdown();
+        } else {
+          // Skip the countdown
+          startRecording();
+        }
       }, 100);
       
       return () => clearTimeout(timer);
     }
-  }, [autoStart, microphoneStream]);
+  }, [autoStart, microphoneStream, needsInstrumentalDelay]);
   
   // Clean up timers on unmount
   useEffect(() => {
     return () => {
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
       if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
       if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
         mediaRecorderRef.current.stop();
@@ -138,7 +169,10 @@ const PlayerRecorder = ({
       
       <div className="recording-section">
         {status === 'ready' && (
-          <button className="record-button" onClick={startRecording}>
+          <button 
+            className="record-button" 
+            onClick={needsInstrumentalDelay ? startCountdown : startRecording}
+          >
             Start Recording
           </button>
         )}
@@ -147,6 +181,13 @@ const PlayerRecorder = ({
           <div className="preparing-info">
             <p>Get ready to sing!</p>
             <div className="loading-spinner"></div>
+          </div>
+        )}
+        
+        {status === 'countdown' && (
+          <div className="countdown-info">
+            <p>Instrumental playing... Recording starts in:</p>
+            <div className="countdown-timer">{countdownTime.toFixed(1)}s</div>
           </div>
         )}
         
