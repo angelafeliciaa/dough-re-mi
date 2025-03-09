@@ -142,7 +142,8 @@ const Game = () => {
 
   // Handle realtime score updates
   const handleRealtimeScoreUpdate = (score) => {
-    setRealtimeScore(score);
+    // divided by 5 for scaling down
+    setRealtimeScore(Math.round(score/5));
   };
 
   // Handle score calculation for the current player
@@ -155,9 +156,9 @@ const Game = () => {
     
     // Update the score for the current player
     if (currentPlayer === 1) {
-      setPlayer1Score(prevScore => prevScore + score);
+      setPlayer1Score(prevScore => prevScore + Math.round(score/5));
     } else {
-      setPlayer2Score(prevScore => prevScore + score - 16);
+      setPlayer2Score(prevScore => prevScore + Math.round(score/5) - 10);
     }
 
     // Move to next line or end game
