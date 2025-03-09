@@ -7,7 +7,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Game from './pages/track/game';
 import Leaderboard from './pages/leaderboard/leaderboard'; 
 
-
 function App() {
   return (
     <Router>
