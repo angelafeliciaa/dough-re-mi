@@ -1,0 +1,165 @@
+
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "PixelFont", monospace;
+  }
+  
+  .game-container {
+    background-color: #ffd6e7;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .bakery-items {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 20%;
+  }
+  
+  .bakery-item {
+    image-rendering: pixelated;
+    width: 48px;
+    height: 48px;
+  }
+  
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .game-title {
+    font-size: 48px;
+    font-family: "PixelFont", monospace;
+    letter-spacing: 2px;
+    margin: 0;
+    image-rendering: pixelated;
+    text-align: center;
+  }
+  
+  .start-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 32px;
+    cursor: pointer;
+  }
+  
+  .cd-icon {
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
+  }
+  
+  /* Position adjustments for specific items */
+  .bread {
+    transform: translateX(-40px) translateY(20px);
+  }
+  
+  .tart {
+    transform: translateY(-10px);
+  }
+  
+  .cookies {
+    transform: translateX(20px) translateY(-5px);
+  }
+  
+  .pancakes {
+    transform: translateX(10px) translateY(15px);
+  }
+  
+  .donut {
+    transform: translateX(-40px) translateY(-20px);
+  }
+  
+  .pretzel {
+    transform: translateX(-10px) translateY(10px);
+  }
+  
+  .cake {
+    transform: translateX(20px) translateY(-15px);
+  }
+  
+  .cinnamon-roll {
+    transform: translateX(40px) translateY(5px);
+  }
+  
+
+ /* Name Entry Form */
+.name-entry-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.8); /* Slight white background with transparency */
+  border-radius: 15px;
+  max-width: 350px;
+  margin: 0 auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow to make it pop */
+}
+
+/* Heading for Name Entry */
+.name-entry-container h2 {
+  font-size: 26px;
+  font-family: "PixelFont", monospace;
+  text-align: center;
+  color: #ff3366; /* Keeping the pink tone */
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Soft shadow effect for text */
+}
+
+/* Input field styling */
+.name-input {
+  font-size: 18px;
+  padding: 12px;
+  width: 80%;
+  border-radius: 50px; 
+  text-align: center;
+  outline: none;
+  background-color: #f6a8d7;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* Input focus styling */
+.name-input:focus {
+  box-shadow: 0 0 8px rgba(255, 51, 102, 0.5); /* Glow effect when focused */
+}
+
+/* Submit button styling */
+.start-button {
+  border: none;
+  padding: 15px 25px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+/* Button hover effect */
+.start-button:hover {
+  transform: scale(1.05); /* Slight scale effect when hovered */
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Button active effect */
+.start-button:active {
+  transform: scale(0.98); /* Slight shrink effect when clicked */
+}
