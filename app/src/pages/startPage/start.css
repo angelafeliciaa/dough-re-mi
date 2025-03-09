@@ -4,7 +4,7 @@ body {
   font-family: "PixelFont", monospace;
 }
 
-.game-container {
+.start-container {
   background-color: #ffd6e7;
   width: 100vw;
   height: 100vh;
