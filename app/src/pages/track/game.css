@@ -71,7 +71,7 @@
 
 .center-image {
   width: 110vh; /* Keep the track image large */
-  height: 75vh;
+  height: 55vh;
   object-fit: cover;
   /* border-radius: 10px; */
   /* border-bottom-left-radius: 10px; */
