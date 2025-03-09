@@ -22,16 +22,35 @@ const Graphic = ({ realtimeScore, player1Score, player2Score }) => {
 
   // Update character and message based on `realtimeScore`
   useEffect(() => {
+    let randomText = '';
+    
     if (player1Score || player2Score > 30) {
       setCharacter("snail");
-      setText("🔥 Amazing performance!");
+      const snailPhrases = [
+        "Amazing!", 
+        "Ok Sabrina!!", 
+        "Singer of the year!"
+      ];
+      randomText = snailPhrases[Math.floor(Math.random() * snailPhrases.length)];
     } else if (player1Score || player2Score > 20) {
       setCharacter("snail");
-      setText("👍 Good job!");
+      const snailPhrases = [
+        "Amazing!", 
+        "Ok Sabrina!!", 
+        "Singer of the year!"
+      ];
+      randomText = snailPhrases[Math.floor(Math.random() * snailPhrases.length)];
     } else {
       setCharacter("fish");
-      setText("😐 Keep practicing!");
+      const fishPhrases = [
+        "Are you even singing the right song?",
+        "Ummm... I would reevaluate a singing career",
+        "Good try..."
+      ];
+      randomText = fishPhrases[Math.floor(Math.random() * fishPhrases.length)];
     }
+  
+    setText(randomText);
   }, [player1Score, player2Score]);
 
   // Move cars based on scores
