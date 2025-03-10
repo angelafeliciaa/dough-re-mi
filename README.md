@@ -30,4 +30,3 @@ From audio processing to game logic and even animation, we learned a ton along t
 Next up: let’s make this a true vocal showdown! We’re planning to have two people singing at once, analyzing their audio and scores simultaneously. This means double the fun and double the competition! 🎤🔥
 
 Devpost: https://devpost.com/software/dough-re-mi
-
